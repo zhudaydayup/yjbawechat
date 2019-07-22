@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>企业内查</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link rel="stylesheet"  href="../assets/css/icon.css"/>
+    <link rel="stylesheet" type="text/css"  href="../assets/css/iconfont.css"/>
+    <link rel="stylesheet"  href="../assets/css/example.css">
+    <link href="../WEUI/demos.css" rel="stylesheet" />
+    <link href="../WEUI/jquery-weui.css" rel="stylesheet" />
+    <link href="../WEUI/weui.min.css" rel="stylesheet" />
+    <script src="../WEUI/jquery-2.1.4.js"></script>
+    <script src="../WEUI/fastclick.js"></script>
+    <link href="../css/common.css" type="text/css" rel="stylesheet"/>
+    <link href="../css/index.css" type="text/css" rel="stylesheet"/>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/URL.js"></script>
+    <script src="../NoticeCheck/zjCheck.js"></script>
+    <script src="../WEUI/jquery-weui.js"></script>
+    <style>
+        li {
+            float: left;
+            width: 25%;
+            margin-left: 30px;
+            list-style-type: none;
+        }
+
+    </style>
+
+</head>
+<body>
+<header class='demos-header'>
+    <h1 class="demos-title">企业现场检查记录</h1>
+</header>
+<div id="mainBody" >
+    <div class="weui-cells weui-cells_form" >
+        <div class="weui-cell weui-cell_switch">
+            <div class="weui-cell__bd">检查开始/截止时间</div>
+            <!--<div class="weui-cell__ft">-->
+                <!--<label for="switchtp_time" class="weui-switch-cp">-->
+                    <!--<input id="switchtp_time" class="weui-switch-cp__input" type="checkbox"  onclick="hide()">-->
+                    <!--<div class="weui-switch-cp__box"></div>-->
+                <!--</label>-->
+            <!--</div>-->
+        </div>
+        <div id="stime" >
+            <div class="weui-cell" id="time001">
+                <div class="weui-cells__title"><label class="weui-label">开始时间</label></div>
+                <div class="weui-cell__bd">
+                    <input id="CHECKED_START_TIME"  class="weui-input"  >
+                </div>
+            </div>
+            <div class="weui-cell" id="time002">
+                <div class="weui-cells__title"><label class="weui-label">结束时间</label></div>
+                <div class="weui-cell__bd">
+                    <input id="CHECKED_END_TIME"  class="weui-input"   >
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">单位信息/可选<span style="color: red">*</span></div>
+        <div class="weui-cell__ft">
+            <label for="switchtp_fs" class="weui-switch-cp">
+                <input id="switchtp_fs" class="weui-switch-cp__input" type="checkbox" onclick="hide1()">
+                <div class="weui-switch-cp__box"></div>
+            </label>
+        </div>
+    </div>
+    <div id="itemFs" style="display: none">
+        <div class="weui-cell">
+            <div class="weui-cells__title"><label class="weui-label">被检查单位<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入被检查单位" id="CHECKED_UNIT" >
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cells__title"><label class="weui-label">信用代码<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入社会信用代码" id="UNIT_NUMBER" >
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cells__title"><label class="weui-label">单位地址<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入被检单位" id="ADDRESS" >
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cells__title"><label class="weui-label">法定代表<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="被检单位法人" id="REPRESENT_PEOPLE" >
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cells__title"><label class="weui-label">法人电话</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="number" pattern="[0-9]*" placeholder="输入法人电话" id="REPRESENT_MOBILE" >
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!--<div class="weui-cells__title">自动获取（可以修改）社会信用代码</div>-->
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cells__title"><label class="weui-label">被检查场所<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入被检查场所" id="CHECKED_LOCATION" >
+            </div>
+        </div>
+
+        <div class="weui-cell">
+            <div class="weui-cells__title"><label class="weui-label">检查人员1姓名<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入检查人员1姓名" id="CHECK_PEOPLE1" >
+            </div>
+        </div>
+        <div id="othercheck" style="display: none;margin-top: 0px"class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cells__title"><label class="weui-label">检查人员2姓名</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请输入检查人姓名" id="CHECK_PEOPLE2" >
+                </div>
+            </div>
+        </div>
+        <a class="weui-cell weui-cell_link" onclick="addCheckMenSet()">
+            <div class="weui-cell__bd">添加其他检查人员</div>
+        </a>
+    </div>
+
+    <div class="weui-cells__title">检查情况</div>
+    <div id="legalCheck">
+
+    </div>
+    <!--<div class="weui-cells__title">检查不违规情况</div>-->
+    <div id="notLegalCheck">
+
+    </div>
+
+    <div  style="margin-top:20px;margin-bottom: 30px;">
+        <input id="NextStep" onclick="submitRecord()"  class="weui-btn weui-btn_primary" style="width:90%;font-size:20px;" value="提交" type="button" >
+    </div>
+</div>
+
+
+<div class='demos-content-padded' id="loadingmore" style="display: none">
+    <div class="weui-loadmore">
+        <i class="weui-loading"></i>
+        <span class="weui-loadmore__tips">正在提交创建</span>
+    </div>
+    <div class="weui-loadmore weui-loadmore_line">
+        <span class="weui-loadmore__tips">欢迎使用</span>
+    </div>
+    <div class="weui-loadmore weui-loadmore_line weui-loadmore_dot">
+        <span class="weui-loadmore__tips"></span>
+    </div>
+</div>
+
+
+    <script>
+    function time(){
+        var time=new Date();
+        var y=time.getFullYear();
+        var M=time.getMonth()+1;
+        M = M < 10 ? ('0' + M) : M;
+        var d=time.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        var h=time.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        var m=time.getMinutes();
+        m = m < 10 ? ('0' + m) : m;
+        var s=time.getSeconds();
+        s = s < 10 ? ('0' + s) : s;
+        return y+"-"+M+"-"+d+" "+h+":"+m+":"+s;
+    }
+     // document.getElementById("CHECKED_START_TIME").value=time();
+    document.getElementById("CHECKED_END_TIME").value=time();
+    // document.getElementById("stime").style.display ="none";
+    // function hide() {
+    //     if( $("#switchtp_time").prop("checked") == true){
+    //         document.getElementById("stime").style.display ="";
+    //
+    //     }else{
+    //         document.getElementById("stime").style.display ="none";
+    //     }
+    // }
+
+    function hide1() {
+        if( $("#switchtp_fs").prop("checked") == true){
+            document.getElementById("itemFs").style.display ="";
+        }else{
+            document.getElementById("itemFs").style.display ="none";
+        }
+    }
+
+
+    </script>
+
+
+</body>
+</html>
+
+

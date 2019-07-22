@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head id="Head1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>现场整改记录</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="description" content="">
+    <link rel="stylesheet" href="../WEUI/css/weui.css"/>
+    <link rel="stylesheet" href="../WEUI/css/jquery-weui.min.css"/>
+    <link rel="stylesheet" href="../WEUI/css/example.css"/>
+    <link href="../WEUI/demos.css" rel="stylesheet" />
+    <script src="../WEUI/js/jquery.min.js"></script>
+    <script src="../WEUI/js/jquery-weui.min.js"></script>
+
+    <script src="../Common/TemporaryGeneralDanger.js"></script>
+    <style>
+        li {
+            float: left;
+            width: 25%;
+            margin-left: 30px;
+            list-style-type: none;
+        }
+
+    </style>
+</head>
+
+<body>
+<header class='demos-header'>
+    <h1 class="demos-title">现场整改记录</h1>
+</header>
+<div class="page">
+    <div class="page__bd">
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">被检查单位：</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" th:value="${CHECKED_UNIT}" >
+                </div>
+            </div>
+            <!--<div class="weui-cell">-->
+                <!--<div class="weui-cells__title">被检查单位：</div>-->
+                <!--<div class="weui-cell__bd">-->
+                    <!--<input class="weui-input" type="text" th:value="${CHECKED_UNIT}"/>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__hd">检查不合格项</div>
+            <div class="weui-panel__bd">
+                <div class="weui-media-box weui-media-box_text" th:each="checkItem:${checkItem}">
+                    <h4 class="weui-media-box__title" th:text="${checkItem.TEMP_NAME}"></h4>
+                    <p class="weui-media-box__desc" th:text="${checkItem.CHECKE_DETAIL}"></p>
+                </div>
+            </div>
+        </div>
+        <div class="weui-cells__title">处理决定：</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd" >
+                    <textarea class="weui-textarea"   id="PROCESS_DECISION" rows="5">依据XXXXXXXX的规定,现作出如下现场处理决定： </textarea>
+                    <!--<div class="weui-textarea-counter" id="contentNum"><span>0</span>/140</div>-->
+                </div>
+            </div>
+        </div>
+
+        <div class="weui-cells__title"> 如果不服本决定，可以依法在60日内向南京市人民政府或者<lable >江苏省应急管理厅</lable>申请行政复议，或者在6个月内依法<lable>向南京铁路运输法院</lable>提起行政诉讼，但本决定不停止执行，法律另有规定的除外。</div>
+    </div>
+    <div  style="margin-top:20px;margin-bottom: 30px;">
+        <input onclick="temporaryRecord()"  class="weui-btn weui-btn_primary" style="width:90%;font-size:20px;" value="暂存" type="button" >
+    </div>
+    <div  style="margin-top:20px;margin-bottom: 30px;">
+        <input id="NextStep" onclick="submit()"  class="weui-btn weui-btn_primary" style="width:90%;font-size:20px;" value="下一步" type="button" >
+    </div>
+
+</div>
+
+
+
+</body>
+<script>
+    function getParam(name){
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r!=null) return unescape(r[2]);
+        return null;
+    }
+    var RecordId=getParam("RecordId");
+    function submit() {
+        var text1 = document.getElementById("PROCESS_DECISION").value;
+        window.location.href = "../exLawDictionary/expertSignPage?RecordId="+RecordId+"&text="+text1+"&userId="+userId+"&social_credit_code="+social_credit_code;
+
+    }
+</script>
+</html>
+
+

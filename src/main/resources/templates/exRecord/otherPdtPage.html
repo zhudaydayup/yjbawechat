@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>检查信息填写</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+
+    <link href="../WEUI/demos.css" rel="stylesheet" />
+    <link href="../WEUI/jquery-weui.css" rel="stylesheet" />
+    <link href="../WEUI/weui.min.css" rel="stylesheet" />
+    <script src="../WEUI/jquery-2.1.4.js"></script>
+    <script src="../WEUI/fastclick.js"></script>
+    <script src="../WEUI/jquery-weui.js"></script>
+
+    <script src="../Common/TemporaryUrl.js"></script>
+    <style>
+        li {
+            float: left;
+            width: 25%;
+            margin-left: 30px;
+            list-style-type: none;
+        }
+
+    </style>
+
+</head>
+<body>
+<div id="mainBody">
+
+    <div class="page msg_success js_show">
+        <div class="weui-msg">
+            <div class="weui-msg__icon-area"><i class="weui-icon-info weui-icon_msg"style="font-size: 120px"></i></div>
+            <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title">选择措施决定</h2>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" onclick="turnToSite()">现场处理措施决定</a>
+                </p>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" onclick="turnToZeLing()">责令限期整改</a>
+                </p>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" onclick="turnToPulish()">执法处罚</a>
+                </p>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" onclick="turnToNext()">结束</a>
+                </p>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" onclick="temporaryRecord()">暂存</a>
+                </p>
+            </div>
+            <div class="weui-msg__extra-area">
+                <div class="weui-footer">
+                    <p class="weui-footer__links">
+                        <a class="weui-footer__link" href="javascript:void(0);"></a>
+                    </p>
+                    <p class="weui-footer__text">南京理工大学提供技术支持</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="weui-gallery" id="backImg" style="display: none">
+    <span class="weui-gallery__img" style="background-image: url(../images/withoutImg.png);" id="backCodeImg"></span>
+    <div class="weui-gallery__opr">
+        <a class="weui-gallery__del" href="javascript:"onclick="hideerweima()">
+            <i class="weui-icon-cancel"></i>
+        </a>
+    </div>
+</div>
+<div class="weui-gallery" id="backPdf" style="display: none">
+    <span class="weui-gallery__img" style="background-image: url(../images/withoutImg.png);" id="backPdfImg"></span>
+    <div class="weui-gallery__opr">
+        <a class="weui-gallery__del" href="javascript:"onclick="hidePdf()">
+            <i class="weui-icon-cancel"></i>
+        </a>
+    </div>
+</div>
+<script>
+    var userId=getUrlParam("userId");
+    var social_credit_code=getUrlParam("social_credit_code");
+    var RecordId=getUrlParam("RecordId");
+
+    //获取url参数
+    function getUrlParam(key){
+        // 获取参数
+        var url = window.location.search;
+        // 正则筛选地址栏
+        var reg = new RegExp("(^|&)"+ key +"=([^&]*)(&|$)");
+        // 匹配目标参数
+        var result = url.substr(1).match(reg);
+        //返回参数值
+        return result ? decodeURIComponent(result[2]) : null;
+    }
+
+
+    function  hideerweima(){
+        $("#backImg").css("display","none");
+    }
+
+    function hidePdf(){
+        $("#backPdf").css("display","none");
+    }
+
+    function turnToSite(){
+         window.location.href="../exLawDictionary/PunishMeasure?RecordId="+RecordId+"&userId="+userId+"&social_credit_code="+social_credit_code;
+    }
+    function turnToZeLing(){
+        window.location.href="../exLawDictionary/zeLingXinQiView?RecordId="+RecordId+"&userId="+userId+"&social_credit_code="+social_credit_code;
+    }
+    function turnToPulish() {
+        window.location.href="../exLawDictionary/ZhiFaChuFa?RecordId="+RecordId+"&userId="+userId+"&social_credit_code="+social_credit_code;
+    }
+    function turnToNext(){
+
+        var temp={};
+        temp["RecordId"] = RecordId;
+        temp["review_type"] = "核查结束";
+        temp["user_id"] = userId;
+        temp["entId"] = social_credit_code;
+        $.post("../data/PushExpertData", temp, function (res) {
+            alert(res);
+            window.location.href="../page/exindex"+"?user_id="+userId+"&social_credit_code="+social_credit_code;
+        });
+
+    }
+</script>
+</body>
+</html>
+
+

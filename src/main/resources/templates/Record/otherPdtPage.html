@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>执法信息填写</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link rel="stylesheet"  href="../assets/css/icon.css"/>
+    <link rel="stylesheet" type="text/css"  href="../assets/css/iconfont.css"/>
+
+    <link rel="stylesheet"  href="../assets/css/example.css">
+    <link href="../WEUI/demos.css" rel="stylesheet" />
+    <link href="../WEUI/jquery-weui.css" rel="stylesheet" />
+    <link href="../WEUI/weui.min.css" rel="stylesheet" />
+    <script src="../WEUI/jquery-2.1.4.js"></script>
+    <script src="../WEUI/fastclick.js"></script>
+    <link href="../css/common.css" type="text/css" rel="stylesheet"/>
+    <link href="../css/index.css" type="text/css" rel="stylesheet"/>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/URL.js"></script>
+    <script src="../WEUI/jquery-weui.js"></script>
+    <style>
+        li {
+            float: left;
+            width: 25%;
+            margin-left: 30px;
+            list-style-type: none;
+        }
+
+    </style>
+
+    <script src="../Common/zhifa/TemporaryZhiFaUrl.js"></script>
+
+</head>
+<body>
+<div id="mainBody">
+
+    <div class="page msg_success js_show">
+        <div class="weui-msg">
+            <div class="weui-msg__icon-area"><i class="weui-icon-info weui-icon_msg"style="font-size: 120px"></i></div>
+            <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title">选择处理决定</h2>
+            </div>
+
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" onclick="turnToOtherPdf()">现场处置措施决定</a>
+                </p>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" onclick="turnToZeLing()">责令限期整改</a>
+                </p>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" onclick="turnToChuFa()">一般程序</a>
+                    <!--<a class="weui-btn weui-btn_default" href="javascript:history.back();">再来一次</a>-->
+                </p>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" onclick="temporaryRecord()">暂存</a>
+                </p>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" onclick="turnToNext()">全部合格</a>
+                </p>
+            </div>
+
+            <div class="weui-msg__extra-area">
+                <div class="weui-footer">
+                    <p class="weui-footer__links">
+                        <a class="weui-footer__link" href="javascript:void(0);"></a>
+                    </p>
+                    <p class="weui-footer__text">南京理工大学提供技术支持</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="weui-gallery" id="backImg" style="display: none">
+    <span class="weui-gallery__img" style="background-image: url(../images/withoutImg.png);" id="backCodeImg"></span>
+    <div class="weui-gallery__opr">
+        <a class="weui-gallery__del" href="javascript:"onclick="hideerweima()">
+            <i class="weui-icon-cancel"></i>
+        </a>
+    </div>
+</div>
+<div class="weui-gallery" id="backPdf" style="display: none">
+    <span class="weui-gallery__img" style="background-image: url(../images/withoutImg.png);" id="backPdfImg"></span>
+    <div class="weui-gallery__opr">
+        <a class="weui-gallery__del" href="javascript:"onclick="hidePdf()">
+            <i class="weui-icon-cancel"></i>
+        </a>
+    </div>
+</div>
+<script>
+
+    var RecordId=getUrlParam("RecordId");
+
+    //获取url参数
+    function getUrlParam(key){
+        // 获取参数
+        var url = window.location.search;
+        // 正则筛选地址栏
+        var reg = new RegExp("(^|&)"+ key +"=([^&]*)(&|$)");
+        // 匹配目标参数
+        var result = url.substr(1).match(reg);
+        //返回参数值
+        return result ? decodeURIComponent(result[2]) : null;
+    }
+
+
+
+    function getErWeiCode(){
+        $("#backImg").css("display","block");
+    }
+    function  hideerweima(){
+        $("#backImg").css("display","none");
+
+    }
+    function  showPdf(){
+        location.href="../page/PdfView?url="+finalUrl;
+        // $("#backPdf").css("display","block");
+
+    }
+    function hidePdf(){
+        $("#backPdf").css("display","none");
+
+    }
+    window.onload=function () {
+
+        getPdfRecord();
+    };
+    var finalUrl="";
+    function getPdfRecord(){
+        RecordId;
+        $.ajax({
+            type: "POST",
+            url:  "/Record/GetIdRecord",
+            data: {
+                RecordId: RecordId
+            },
+            dataType: "json",
+            async: true,
+            success: function (data) {
+                if (data.backFlag == "ok") {
+                    var PdfUrl=data.RecordInfo[0].eNFORCE_PAPER
+                    finalUrl="../"+PdfUrl
+                    var QR_CODE_URL=data.RecordInfo[0].qR_CODE_URL
+                    var url="url(../"+QR_CODE_URL+")"
+                    $("#backCodeImg").css("background",""+url+" no-repeat center center");
+                    $("#backCodeImg").css("background-size","100%");
+
+                    // 100%
+                    $("#PdfUrl").html('<a class="weui-btn weui-btn_primary" onclick="showPdf()">预览执法文书</a>');
+
+                }
+                else {
+                    alert("加载失败，请重新加载");
+
+                }
+            }
+        })
+    }
+    function turnToOtherPdf(){
+         window.location.href="../LawDictionary/PunishMeasure?RecordId="+RecordId+"&userId="+userId+"&social_credit_code="+social_credit_code;
+    }
+    function turnToZeLing(){
+        window.location.href="../page/zeLingXinQiView?RecordId="+RecordId+"&userId="+userId+"&social_credit_code="+social_credit_code;
+    }
+    function turnToNext(){
+        location.href="../page/index"+"?user_id="+userId+"&ent_id="+social_credit_code;
+    }
+
+    function turnToChuFa(){
+        var temp={};
+        temp["RecordId"] = RecordId;
+        $.post("../data/PushChuFaData", temp, function (res) {
+            var odj = res;
+            if (odj['tag']=="succeed") {
+                alert("推送成功，请在电脑端进行处理");
+            }
+        },"json");
+    }
+
+
+</script>
+</body>
+</html>
+
+

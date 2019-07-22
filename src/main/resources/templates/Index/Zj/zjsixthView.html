@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" class="ui-mobile" xmlns:th="http://www.thymeleaf.org">
+<head >
+    <meta charset="UTF-8">
+    <title>企业内查</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link type="text/css" rel="stylesheet" th:href="@{/Content/Index/jquery.mobile-1.3.2.min.css}" />
+    <link type="text/css" rel="Stylesheet" th:href="@{/Content/Index/bootstrap.min.css}" />
+    <link type="text/css" rel="Stylesheet" th:href="@{/Content/Index/procedure_serve.css}" />
+    <script type="text/javascript" th:src="@{/Scripts/Index/jquery-1.11.2.js}" ></script>
+    <script type="text/javascript" th:src="@{/Scripts/Index/jquery.mobile-1.3.2.min.js}"></script>
+    <script type="text/javascript" th:src="@{/Scripts/Index/bootstrap.js}" ></script>
+
+
+    <script>
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return (r[2]); return null;
+        }
+        var one_id=GetQueryString("one_id");
+        var two_id=GetQueryString("two_id");
+        var three_id=GetQueryString("three_id");
+        var four_id=GetQueryString("four_id");
+        var five_id=GetQueryString("five_id");
+        var userId=GetQueryString("userId");
+        var RecordId=GetQueryString("RecordId");
+        var social_credit_code=GetQueryString("social_credit_code");
+        function show() {
+            var RecordId=GetQueryString("RecordId");
+            window.location.href="../page/ZjView?RecordId="+RecordId+"";
+        }
+
+
+        var Json={};
+        Json["oneId"]=one_id;
+        Json["twoId"]=two_id;
+        Json["threeId"]=three_id;
+        Json["fourId"]=four_id;
+        Json["fiveId"]=five_id;
+        Json["RecordId"]=RecordId;
+        window.onload = function () {
+
+            $.post("../Index/ZjcheckSixItem", Json, function (res) {
+                var pri_title = decodeURI(GetQueryString("pri_title"));//decodeURI()将中文转换成字符串
+                document.getElementById("titleName").innerHTML = pri_title;
+                var testJson = eval(res);
+                if (testJson[0]["msg"] != 'fail') {
+                    for (var i = 0; i < testJson.length; i++) {
+                        var flag = testJson[i]["flag"];
+                        if (flag == 1) {
+                            $("#List").append(
+                                "<tr style='border: 1px solid;'>" +
+                                "<td style='border: 1px solid;'>" +
+                                "<li class='elemb'>" +
+                                "<div style='color: #00BE67'>" +
+                                "<p>" + testJson[i]["SIX_TITLE"] + "_" + one_id + "_" + two_id + "_" + three_id + "_" + four_id + "_" + five_id + "_" + testJson[i]["SIX_ID"] + "&nbsp;&nbsp;" + "</p>" +
+                                "</div>" +
+                                "<div style='width: 190px;color: #00BE67'>" +
+                                "<p>" + testJson[i]["SIX_NAME"] + "</p>" +
+                                "</div>" +
+                                "<button type='button' class='btn btn-primary' go='true' six_img='" + testJson[i]["SIX_IMG"] + "' six_id='" + testJson[i]["SIX_ID"] + "'  title='" + testJson[i]["SIX_NAME"] + "'>开始检查</button>" +
+                                "<li/>" +
+                                "</td style='border: 1px solid;'> " +
+                                "</tr style='border: 1px solid;'>"
+                            );
+                        } else {
+                            $("#List").append(
+                                "<tr style='border: 1px solid;'>" +
+                                "<td style='border: 1px solid;'>" +
+                                "<li class='elemb'>" +
+                                "<div>" +
+                                "<p>" + testJson[i]["SIX_TITLE"] + "_" + one_id + "_" + two_id + "_" + three_id + "_" + four_id + "_" + five_id + "_" + testJson[i]["SIX_ID"] + "&nbsp;&nbsp;" + "</p>" +
+                                "</div>" +
+                                "<div style='width: 190px'>" +
+                                "<p>" + testJson[i]["SIX_NAME"] + "</p>" +
+                                "</div>" +
+                                "<button type='button' class='btn btn-primary' go='true' six_img='" + testJson[i]["SIX_IMG"] + "' six_id='" + testJson[i]["SIX_ID"] + "'  title='" + testJson[i]["SIX_NAME"] + "'>开始检查</button>" +
+                                "<li/>" +
+                                "</td style='border: 1px solid;'> " +
+                                "</tr style='border: 1px solid;'>"
+                            );
+                        }
+                    }
+                    $("button[go]").click(function () {
+                        location.href = "../page/zjSixCheckView?one_id=" + one_id + "&two_id=" + two_id + "&three_id=" + three_id + "&four_id=" +four_id+ "&five_id=" +five_id+"&six_id="+ $(this).attr("six_id") + "&six_img=" + $(this).attr("six_img") + "&pri_title=" + pri_title + "&title=" + $(this).attr("title") + "&userId=" + userId + "&RecordId=" + RecordId+"&social_credit_code="+social_credit_code;
+                    });
+
+                }
+                else {
+                    alert(testJson[0]["failInfo"]);
+                }
+            });
+        }
+
+
+    </script>
+</head>
+<body>
+
+<h3 id="titleName"  style="text-align:center"></h3>
+
+<div style="margin-top: 30px">
+    <table id="List"  border="0" cellspacing="0" cellpadding="0" style="border: 1px solid;" >
+
+    </table>
+</div>
+<div  style="margin-top:20px;margin-bottom: 30px;">
+    <input onclick="show()"  class="weui-btn weui-btn_primary" style="width:90%;font-size:20px;" value="提交" type="button" >
+</div>
+<!--<button   type="button" style="margin-top:30px;width: 100%;text-align: center;" class="btn btn-success" onclick="show()">提交</button>-->
+
+
+</body>
+</html>

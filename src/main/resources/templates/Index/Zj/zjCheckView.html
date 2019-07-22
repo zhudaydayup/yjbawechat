@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en" class="ui-mobile" xmlns:th="http://www.thymeleaf.org">
+<head runat="server">
+    <meta charset="UTF-8">
+    <title>企业自检</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <!--<link type="text/css" rel="stylesheet" th:href="@{/Content/Index/jquery.mobile-1.3.2.min.css}" />-->
+    <!--<link type="text/css" rel="Stylesheet" th:href="@{/Content/Index/bootstrap.min.css}" />-->
+    <!--<link type="text/css" rel="Stylesheet" th:href="@{/Content/Index/procedure_serve.css}" />-->
+    <!--<script type="text/javascript" th:src="@{/Scripts/Index/jquery-1.11.2.js}" ></script>-->
+    <!--<script type="text/javascript" th:src="@{/Scripts/Index/jquery.mobile-1.3.2.min.js}"></script>-->
+    <!--<script type="text/javascript" th:src="@{/Scripts/Index/bootstrap.js}" ></script>-->
+    <!--<link th:href="@{/WEUI/demos.css}" rel="stylesheet" />-->
+    <!--<link th:href="@{/WEUI/jquery-weui.css}" rel="stylesheet" />-->
+    <!--<link th:href="@{/WEUI/weui.min.css}" rel="stylesheet" />-->
+
+    <link rel="stylesheet"  href="../assets/css/icon.css"/>
+    <link rel="stylesheet" type="text/css"  href="../assets/css/iconfont.css"/>
+    <link rel="stylesheet"  href="../assets/css/example.css">
+    <link href="../WEUI/demos.css" rel="stylesheet" />
+    <link href="../WEUI/jquery-weui.css" rel="stylesheet" />
+    <link href="../WEUI/weui.min.css" rel="stylesheet" />
+    <script src="../WEUI/jquery-2.1.4.js"></script>
+    <script src="../WEUI/fastclick.js"></script>
+    <link href="../css/common.css" type="text/css" rel="stylesheet"/>
+    <link href="../css/index.css" type="text/css" rel="stylesheet"/>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/URL.js"></script>
+    <!--<script src="../AddActivity/AddActivity.js"></script>-->
+    <script src="../js/mypicuploding.js"></script>
+    <script src="../js/myphotoCompress.js"></script>
+    <script src="../WEUI/jquery-weui.js"></script>
+    <script   type="text/javascript" th:src="@{/Scripts/Index/pdfobject.js}"></script>
+    <script th:src="@{/Scripts/Index/pdf.js}"  type="text/javascript"></script>
+
+
+
+    <script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
+    <script src="../WEUI/js/jquery-weui.min.js"></script>
+    <link rel="stylesheet" href="../WEUI/css/jquery-weui.min.css"/>
+</head>
+<body>
+<div >
+    <h4 id="title" style="text-align: center;color: red;margin-top: 10px"></h4>
+</div>
+
+<div id="mainBody" style="margin-top: 20px;">
+    <div class="weui-cells weui-cells_form" style="display: none">
+        <div class="weui-cell weui-cell_switch">
+            <div class="weui-cell__bd">检查开始/截止时间</div>
+            <div class="weui-cell__ft">
+                <label for="switchCP" class="weui-switch-cp">
+                    <input id="switchCP" class="weui-switch-cp__input" type="checkbox" checked="checked" onclick="model_Set()">
+                    <div class="weui-switch-cp__box"></div>
+                </label>
+            </div>
+        </div>
+            <div class="weui-cell" id="time001">
+                <div class="weui-cell__hd"><label class="weui-label">开始时间</label></div>
+                <div class="weui-cell__bd">
+                    <input id="CHECKED_START_TIME"  class="weui-input"  >
+                </div>
+            </div>
+            <div class="weui-cell" id="time002" style="display: none">
+                <div class="weui-cell__hd"><label class="weui-label">结束时间</label></div>
+                <div class="weui-cell__bd">
+                    <input id="CHECKED_END_TIME"  class="weui-input"   >
+                </div>
+            </div>
+    </div>
+
+
+    <div class="weui-cells weui-cells_form"><div class="weui-cells__title">检查情况<span style="color: red">*</span></div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <textarea class="weui-textarea" placeholder="请输入检查情况" rows="3" id="CHECKED_DETAIL"></textarea>
+                <!--<div class="weui-textarea-counter"><span>0</span>/200</div>-->
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--上传图片-->
+    <!--<div class="weui-cells weui-cells_form">
+        <div class="weui-cell weui-cell_switch">
+            <div class="weui-cell__bd">上传图片/可选</div>
+            <div class="weui-cell__ft">
+                <label for="switchtp" class="weui-switch-cp">
+                    <input id="switchtp" class="weui-switch-cp__input" type="checkbox" checked="checked" onclick="uploadtp_Set()">
+                    <div class="weui-switch-cp__box"></div>
+                </label>
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+
+                <div class="weui-uploader" id="topbox">
+                    <div class="weui-uploader__hd">
+                        <p class="weui-uploader__title">上传现场图片</p>
+                        <div class="weui-uploader__info" id="topImgNum">0/9</div>
+                    </div>
+                    <div class="weui-gallery" id="chat_head_gallery">
+                        <span class="weui-gallery__img" id="chat_head_galleryImg"></span>
+                        <div class="weui-gallery__opr">
+                            <a href="javascript:" class="weui-gallery__del chat_head_delete ">
+                                <i class="weui-icon-delete weui-icon_gallery-delete"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="weui-uploader__bd">
+                        &lt;!&ndash;<progress id="progressBartop" value="0" max="100" style="width:180px"></progress>&ndash;&gt;
+                        <span id="percentagetop"></span>&lt;!&ndash;<span id="timetop"></span>&ndash;&gt;
+                        &lt;!&ndash;<br /><br />&ndash;&gt;
+                        <ul class="weui-uploader__files " id="view_chat_head" style="margin-left: 1px">
+                            &lt;!&ndash;<li class="weui-uploader__file" style="background-image:url(../images/pic_160.png)"></li>&ndash;&gt;
+                        </ul>
+                        <div class="weui-uploader__input-box">
+                            <input id="chat_head" class="weui-uploader__input js_file_chat_head" type="file" accept="image/*"  capture="camera"  multiple="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+    <!--上传图片-->
+    <div class="weui-gallery" id="gallery">
+        <span class="weui-gallery__img" id="galleryImg"></span>
+        <div class="weui-gallery__opr">
+            <a href="javascript:" class="weui-gallery__del">
+                <i class="weui-icon-delete weui-icon_gallery-delete"></i>
+            </a>
+        </div>
+    </div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell weui-cell_switch">
+            <div class="weui-cell__bd">上传图片<span style="color: red">*</span></div>
+            <div class="weui-cell__ft">
+                <label for="switchtp" class="weui-switch-cp">
+                    <input id="switchtp" class="weui-switch-cp__input" type="checkbox" checked="checked" onclick="uploadtp_Set()">
+                    <div class="weui-switch-cp__box"></div>
+                </label>
+            </div>
+        </div>
+
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <div class="weui-uploader">
+                    <div class="weui-uploader__hd">
+                        <p class="weui-uploader__title">上传现场图片</p>
+                    </div>
+                    <div class="weui-uploader__bd">
+                        <ul class="weui-uploader__files" id="uploaderFiles">
+
+                        </ul>
+                        <div class="weui-uploader__input-box">
+                            <input id="uploaderInput" class="weui-uploader__input zjxfjs_file" type="file" accept="image/*" multiple="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--上传视屏-->
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell weui-cell_switch">
+            <div class="weui-cell__bd">上传视频/可选</div>
+            <div class="weui-cell__ft">
+                <label for="switchtp_video" class="weui-switch-cp">
+                    <input id="switchtp_video" class="weui-switch-cp__input" type="checkbox"  onclick="uploadtp_Set_video()">
+                    <div class="weui-switch-cp__box"></div>
+                </label>
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <div class="weui-uploader" id="topbox_video"style="display: none">
+                    <div class="weui-uploader__hd">
+                        <p class="weui-uploader__title">上传现场视频</p>
+                    </div>
+                    <div class="weui-gallery" id="chat_head_gallery_video">
+                        <span class="weui-gallery__img" id="chat_head_galleryImg_video"></span>
+                        <div class="weui-gallery__opr">
+                            <a href="javascript:" class="weui-gallery__del chat_head_delete ">
+                                <i class="weui-icon-delete weui-icon_gallery-delete"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="weui-uploader__bd">
+                        <!--<progress id="progressBartop" value="0" max="100" style="width:180px"></progress>-->
+                        <span id="percentagetop_video"></span><!--<span id="timetop"></span>-->
+                        <!--<br /><br />-->
+                        <ul class="weui-uploader__files " id="view_chat_head_video" style="margin-left: 1px">
+                            <!--<li class="weui-uploader__file" style="background-image:url(../images/pic_160.png)"></li>-->
+                        </ul>
+                        <div class="weui-uploader__input-box">
+                            <input id="chat_wideo" class="weui-uploader__input js_file_chat_head"  type="file" accept="video/*"   multiple="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <table style="text-align: center;width: 100%;margin-top: 20px;margin-bottom: 20px" >
+        <tr style="text-align: center">
+            <td style="width: 50%;text-align: center">
+                <input id="false" onclick="submitLaw('不合格')"  class="weui-btn weui-btn_warn" style="width:80%;font-size:20px" value="违规" type="button" >
+            </td>
+            <td style="width: 50%;text-align: center">
+                <input id="true" onclick="submitLaw('合格')"  class="weui-btn weui-btn_primary" style="width:80%;font-size:20px" value="合格" type="button" >
+            </td>
+        </tr>
+    </table>
+</div>
+<div class='demos-content-padded' id="loadingmore" style="display: none">
+    <div class="weui-loadmore">
+        <i class="weui-loading"></i>
+        <span class="weui-loadmore__tips">正在提交创建</span>
+    </div>
+    <div class="weui-loadmore weui-loadmore_line">
+        <span class="weui-loadmore__tips">欢迎使用</span>
+    </div>
+    <div class="weui-loadmore weui-loadmore_line weui-loadmore_dot">
+        <span class="weui-loadmore__tips"></span>
+    </div>
+</div>
+
+
+
+</body>
+
+<script>
+    mui.init();
+    $(function() {
+        var tmpl = '<li class="weui-uploader__file" style="background-image:url(#url#)"></li>',
+            $gallery = $("#gallery"),
+            $galleryImg = $("#galleryImg"),
+            $uploaderInput = $("#uploaderInput"),
+            $uploaderFiles = $("#uploaderFiles");
+
+        $uploaderInput.on("change", function(e) {
+            var src, url = window.URL || window.webkitURL || window.mozURL,
+                files = e.target.files;
+            for(var i = 0, len = files.length; i < len; ++i) {
+                var file = files[i];
+
+                if(url) {
+                    src = url.createObjectURL(file);
+                } else {
+                    src = e.target.result;
+                }
+
+                $uploaderFiles.append($(tmpl.replace('#url#', src)));
+            }
+        });
+        var index; //第几张图片
+        $uploaderFiles.on("click", "li", function() {
+            index = $(this).index();
+            $galleryImg.attr("style", this.getAttribute("style"));
+            $gallery.fadeIn(100);
+        });
+        $gallery.on("click", function() {
+            $gallery.fadeOut(100);
+        });
+        //删除图片
+        $(".weui-gallery__del").click(function() {
+            $uploaderFiles.find("li").eq(index).remove();
+            var array = [];
+            main_pic = main_pic.substring(0,main_pic.length-1);
+            array = main_pic.split('|');
+            array.splice(index,1);
+            main_pic = "";
+            for (var i = 0;i<array.length;i++) {
+                main_pic += array[i].toString()+"|";
+            }
+            //alert(main_pic);
+
+        });
+    });
+</script>
+
+<script>
+
+    $("#CHECKED_START_TIME,#CHECKED_END_TIME").datetimePicker();
+    function time(){
+        var time=new Date();
+        var y=time.getFullYear();
+        var M=time.getMonth()+1;
+        M = M < 10 ? ('0' + M) : M;
+        var d=time.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        var h=time.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        var m=time.getMinutes();
+        m = m < 10 ? ('0' + m) : m;
+        var s=time.getSeconds();
+        s = s < 10 ? ('0' + s) : s;
+        return y+"-"+M+"-"+d+" "+h+":"+m+":"+s;
+    }
+    document.getElementById("CHECKED_START_TIME").value=time();
+    document.getElementById("CHECKED_END_TIME").value=time();
+
+
+    function GetQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return (r[2]); return null;
+    }
+    var userId="";
+    var deviceId="";
+    var name="";
+    var policeNumber="";
+    var phone="";
+    var idCard="";
+    var department="";
+    var duty="";
+    var main_pic="";
+    var video="";
+    var pics="";
+    var USER_ID="";
+    var one_id=GetQueryString("one_id");
+    var two_id=GetQueryString("two_id");
+    var three_id=GetQueryString("three_id");
+    var four_id=GetQueryString("four_id");
+    var social_credit_code=GetQueryString("social_credit_code");
+    var pri_title=decodeURI(GetQueryString("pri_title"));
+
+
+    var url=GetQueryString("four_img");
+    // url="../Content/Images/pdf/1.pdf"
+    var title=decodeURI(GetQueryString("title"));
+    var temp_id=one_id+"-"+two_id+"-"+three_id+"-"+four_id;
+    var serviceId=decodeURI(GetQueryString("RecordId"));
+    var USER_ID=decodeURI(GetQueryString("userId"));
+
+    $("#title").append(
+        '<div class="weui-panel weui-panel_access">'+
+        '<div class="weui-panel__bd">'+
+        '<a onclick="check()" class="weui-media-box weui-media-box_appmsg">'+
+        '<div class="weui-media-box__hd">'+
+        '<img class="weui-media-box__thumb" src="../IMAGE/pdfv.png" alt="未加载">'+
+        '</div>'+
+        '<div class="weui-media-box__bd">'+
+        '<h4 class="weui-media-box__title" style="color: red">'+title+'</h4>'+
+        '<p class="weui-media-box__desc" style="color: red">(点击查看)</p>'+
+        '</div>'+
+        '</a>'+
+        '</div>'+
+        '</div>');
+        /*"<a onclick='check()'>"+
+        "<img src='../IMAGE/pdfv.png' alt='未加载' width='20px' height='20px' align='middle' >"+
+        title+
+        "<span style='font-size: 15px'>(点击查看)</span></a>" );*/
+
+    function check() {
+        location.href="../page/PdfView?url=../"+url;
+    }
+
+
+    $(function () {
+        FastClick.attach(document.body);
+    });
+
+    //确认提交页面
+    function submitLaw(state) {
+        // var options=GetOwnDefinOption();
+        var ajaxPram = {};
+        ajaxPram["TEMP_ID"] = temp_id;
+        ajaxPram["TEMP_PDF"] = url;
+        ajaxPram["TEMP_NAME"] = title;
+        ajaxPram["USER_ID"] = USER_ID;
+        ajaxPram["CHECK_STATE"] = state;
+        ajaxPram["SERVICE_ID"] = serviceId;
+        ajaxPram["CHECKED_START_TIME"] = $("#CHECKED_START_TIME").val();
+        // ajaxPram["CHECKED_END_TIME"] = $("#CHECKED_END_TIME").val();
+        ajaxPram["CHECKED_DETAIL"] = $("#CHECKED_DETAIL").val();
+        ajaxPram["VIDEO_URL"] = video;
+        ajaxPram["LOCATION_IMG"] = main_pic;
+        ajaxPram["OTHER_IMG"] = pics;
+        ajaxPram["UNIT_NUMBER"] = social_credit_code;
+        if(ajaxPram["CHECKED_DETAIL"] == ""){
+            alert("请填写检查情况！！");
+            return false;
+        }
+
+        if (ajaxPram["LOCATION_IMG"] == ""&& state=="不合格" ) {
+            if(confirm("确认不上传图片!")){
+                ajaxPram["LOCATION_IMG"] = "/withoutImg.png"
+            }
+            else{
+                return false;
+            }
+        }
+        if (ajaxPram["LOCATION_IMG"] == ""&& state=="合格" ) {
+            if(confirm("确认不上传图片!")){
+                ajaxPram["LOCATION_IMG"] = "/withoutImg.png"
+            }
+            else{
+                return false;
+            }
+        }
+
+        var isboolture =ajaxPram["CHECKED_DETAIL"]!= ""&&ajaxPram["TEMP_ID"]!= "" && ajaxPram["TEMP_PDF"]!= "" && ajaxPram["CHECK_STATE"]!= "" && ajaxPram["SERVICE_ID"]!= "" ;
+        if (isboolture) {
+            $.confirm("确认提交检查记录!", function (){
+                document.getElementById("mainBody").style.display = "none";
+                document.getElementById("loadingmore").style.display = "";
+                $.post("../Index/zjCreateEnforce", ajaxPram , function (response) {
+                    var odj = response;
+                    if (odj['backFlag'] == "ok") {
+                        alert("提交成功!");
+                        document.getElementById("mainBody").style.display = "";
+                        document.getElementById("loadingmore").style.display = "none";
+                        location.href = "../page/zjfourindex?RecordId=" + serviceId + "&one_id=" + one_id + "&two_id=" + two_id + "&three_id=" + three_id + "&pri_title=" + pri_title+"&social_credit_code="+social_credit_code;
+                    }else{
+                        alert(odj['failInfo']);
+                        document.getElementById("mainBody").style.display = "";
+                        document.getElementById("loadingmore").style.display = "none";
+                        location.href = "../page/zjfourindex?RecordId="+serviceId+"&one_id="+one_id+"&two_id="+two_id+"&three_id="+three_id+"&pri_title="+pri_title+"&social_credit_code="+social_credit_code;
+                    }
+                },"json");
+            }, function () {
+                //取消操作
+            });
+        }
+        else
+            alert("请完善检查信息！");
+    }
+
+    //活动开始时间截止时间显示
+    function model_Set() {
+        var model;
+        if( $("#switchCP").prop("checked") == true){
+            document.getElementById("time001").style.display ="";
+            document.getElementById("time002").style.display ="";
+        }else{
+            document.getElementById("time001").style.display ="none";
+            document.getElementById("time002").style.display ="none";
+        }
+    }
+
+    function uploadtp_Set_video() {
+        if( $("#switchtp_video").prop("checked") == true){
+            document.getElementById("topbox_video").style.display ="";
+        }else{
+            document.getElementById("topbox_video").style.display ="none";
+        }
+    }
+
+    function uploadtp_Set() {
+        if( $("#switchtp").prop("checked") == true){
+            document.getElementById("topbox").style.display ="";
+        }else{
+            document.getElementById("topbox").style.display ="none";
+        }
+    }
+    //是否上传其它图片
+    function uploadop_Set() {
+        if( $("#switchop").prop("checked") == true){
+            document.getElementById("otherbox").style.display ="";
+        }else{
+            document.getElementById("otherbox").style.display ="none";
+        }
+    }
+
+    function fanhui() {
+        window.history.back();
+    }
+    function addlist(){
+        var temp=                '<div class="weui-cell">'+
+            '<div class="weui-cell-bd">'+
+            '<a class="iconfont icon-shanchu " onclick="dellist(this)"style="color: red;">'+'</a>'+
+            '</div>'+
+            '<div class="weui-cell__bd">'+
+            '<input  class="weui-input again" type="text" placeholder="   选项" style="margin-left: 20px">'+
+            '</div>'+
+            '</div>';
+        $("#opts").append(temp)
+    }
+    function dellist(obj){
+        $(obj).parent().parent().remove();
+    }
+
+    //获取url参数
+    function getUrlParam(key){
+        // 获取参数
+        var url = window.location.search;
+        // 正则筛选地址栏
+        var reg = new RegExp("(^|&)"+ key +"=([^&]*)(&|$)");
+        // 匹配目标参数
+        var result = url.substr(1).match(reg);
+        //返回参数值
+        return result ? decodeURIComponent(result[2]) : null;
+    }
+
+    $(function () {
+        var xhr;
+        var video_url="";
+        var filesId = document.getElementById('chat_wideo');//获取id
+        filesId.addEventListener('change', selectFile);
+        function  selectFile() {
+            $.showLoading();
+            var files = event.target.files;
+            if (files.length === 0) {
+                return;
+            }
+            UpladFileVideo();
+        }
+        //上传视屏
+        function UpladFileVideo() {
+            var fileObj = document.getElementById("chat_wideo").files[0]; // js 获取文件对象
+            var url = "../upLoderPic/uploadVideo"; // 接收上传文件的后台地址
+            // alert(fileObj.size/1024/1024);
+            var form = new FormData(); // FormData 对象
+            form.append("file", fileObj); // 文件对象
+            xhr = new XMLHttpRequest();  // XMLHttpRequest 对象
+            xhr.open("post", url, true); //post方式，url为服务器请求地址，true 该参数规定请求是否异步处理。
+            xhr.onload = uploadotherCompleteVideo; //请求完成
+            xhr.onerror = uploadFailedVideo; //请求失败
+            xhr.upload.onloadstart = function () {//上传开始执行方法
+                ot = new Date().getTime();   //设置上传开始时间
+                oloaded = 0;//设置上传开始时，以上传的文件大小为0
+            };
+            xhr.send(form); //开始上传，发送form数据
+        }
+
+        function uploadotherCompleteVideo(evt) {
+            //服务断接收完文件返回的结果
+            var data = JSON.parse(evt.target.responseText);
+            var p = data[0].error;
+            if (p == "0") {
+                video_url = data[0].url;
+                $.hideLoading();
+                alert("视屏上传成功！");
+                // var $preview = $('<li class="weui-uploader__file weui-uploader__file_status chat_head_flag topimgNu" style="background-image:url(' + base64 + ')"></li>');//<div class="weui-uploader__file-content" id="topImgPro">0%</div>
+                // $('#view_chat_head').append($preview);
+                $("#view_chat_head_video").append(
+                    "<video style='width: 100px;height: 100px'    controls >" +
+                    "<source src='' type='video/mp4'  id='audio_id'>" +
+                    "</video>"
+                );
+                // document.getElementById("audio_id").src = "http://192.168.43.53:8082/"+video_url;
+                document.getElementById("audio_id").src = "../"+video_url;
+
+                // document.getElementById("audio_id").src = "http://127.0.0.1:8082/"+video_url;
+            } else {
+                // $.hideLoading();
+                alert("视屏上传失败！");
+            }
+
+        }
+
+        function uploadFailedVideo(evt) {
+            alert("视屏上传失败！");
+        }
+    });
+
+</script>
+
+</html>

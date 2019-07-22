@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>检查项目</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <script src="../WEUI/fastclick.js"></script>
+    <link rel="stylesheet" href="../WEUI/css/weui.css"/>
+    <link rel="stylesheet" href="../WEUI/css/jquery-weui.min.css"/>
+    <link rel="stylesheet" href="../WEUI/css/example.css"/>
+    <script src="../WEUI/js/jquery.min.js"></script>
+    <script src="../WEUI/js/jquery-weui.min.js"></script>
+
+    <script src="../js/mypicuploding.js"></script>
+    <script src="../js/myphotoCompress.js"></script>
+
+    <script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
+    <script src="../WEUI/js/jquery-weui.min.js"></script>
+    <link rel="stylesheet" href="../WEUI/css/jquery-weui.min.css"/>
+</head>
+<body>
+<div class="weui-cells__title">自动获取（可以修改）</div>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">被检查单位信息</div>
+        <div class="weui-cell__ft">
+            <label for="switchtp_fs" class="weui-switch-cp">
+                <input id="switchtp_fs" class="weui-switch-cp__input" type="checkbox" checked="checked" onclick="hide1()">
+                <div class="weui-switch-cp__box"></div>
+            </label>
+        </div>
+    </div>
+
+    <div id="itemFs">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">被检查单位</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入被检查单位" id="CHECKED_UNIT" >
+            </div>
+        </div>
+
+        <!--<div class="weui-cell" style="display: none">-->
+            <!--<div class="weui-cell__hd"><label class="weui-label">信用代码</label></div>-->
+            <!--<div class="weui-cell__bd">-->
+                <!--<input class="weui-input" type="text" placeholder="请输入社会信用代码" id="UNIT_NUMBER" >-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">单位地址</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入被检单位" id="ADDRESS" >
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">法定代表人</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="输入法定代表人" id="REPRESENT_PEOPLE" >
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">法人联系电话</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="number" pattern="[0-9]*" placeholder="输入法人联系电话" id="REPRESENT_MOBILE" >
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">风险点<span style="color: red">*</span></label></div>
+        <div class="weui-cell__bd">
+            <input id="Risk_Point"  class="weui-input" placeholder="请选择风险点">
+        </div>
+    </div>
+</div>
+
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">检查开始时间:</label></div>
+        <div class="weui-cell__bd">
+            <input id="CHECKED_START_TIME"  class="weui-input">
+        </div>
+    </div>
+</div>
+
+<div class="weui-cells__title">检查单位信息<span style="color: red">*</span></div>
+
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">检查人员1</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" type="text" placeholder="请输入检查人员" name="CheckMen" id="CHECK_PEOPLE1" >
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">证件号1</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" type="text" placeholder="请输入证件号" name="CheckMen" id="CARD_NUMBER1" >
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">检查单位1</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" type="text" placeholder="请输入检查单位" name="CheckMen" id="CHECK_UNIT1">
+        </div>
+    </div>
+    <span id = "checkMenBox"></span>
+    <a class="weui-cell weui-cell_link" >
+        <div class="weui-cell__bd" onclick="addCheckMen()">添加检查人员</div>
+        <div class="weui-cell__bd" onclick="delectCheckMen()" style="color: red">删除检查人员</div>
+    </a>
+</div>
+
+<div class="weui-cells__title">检查项目<span style="color: red">*</span></div>
+<div class="weui-cells weui-cells_checkbox"  id="checkbox">
+        <span th:each="checkedItem:${checkedItem}" >
+            <label class="weui-cell weui-check__label" th:for="'checkbox'+${checkedItem.CHECKED_ID}">
+                <div class="weui-cell__hd">
+                    <input type="checkbox" class="weui-check"  th:id="'checkbox'+${checkedItem.CHECKED_ID}" />
+                    <i class="weui-icon-checked"></i>
+                </div>
+                <div class="weui-cell__bd">
+                    <p th:text="${checkedItem.NAME}" th:id="'checkedItem'+${checkedItem.CHECKED_ID}"></p>
+                </div>
+            </label>
+        </span>
+</div>
+
+<div class="weui-cells__title">检查情况<span style="color: red">*</span></div>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <textarea class="weui-textarea" placeholder="请输入检查情况" rows="3" id="check_desc"></textarea>
+            <div class="weui-textarea-counter"><span>0</span>/200</div>
+        </div>
+    </div>
+</div>
+
+<!--上传图片-->
+<!--<div class="weui-cells weui-cells_form">
+    <div class="weui-cell weui-cell_switch">
+        <div class="weui-cell__bd">上传图片<span style="color: red">*</span></div>
+        <div class="weui-cell__ft">
+            <label for="switchtp" class="weui-switch-cp">
+                <input id="switchtp" class="weui-switch-cp__input" type="checkbox" checked="checked" onclick="uploadtp_Set()">
+                <div class="weui-switch-cp__box"></div>
+            </label>
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+
+            <div class="weui-uploader" id="topbox">
+                <div class="weui-uploader__hd">
+                    <p class="weui-uploader__title">上传现场图片</p>
+                    <div class="weui-uploader__info" id="topImgNum">0/20</div>
+                </div>
+                <div class="weui-gallery" id="chat_head_gallery">
+                    <span class="weui-gallery__img" id="chat_head_galleryImg"></span>
+                    <div class="weui-gallery__opr">
+                        <a href="javascript:" class="weui-gallery__del chat_head_delete ">
+                            <i class="weui-icon-delete weui-icon_gallery-delete"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="weui-uploader__bd">
+                    &lt;!&ndash;<progress id="progressBartop" value="0" max="100" style="width:180px"></progress>&ndash;&gt;
+                    <span id="percentagetop"></span>&lt;!&ndash;<span id="timetop"></span>&ndash;&gt;
+                    &lt;!&ndash;<br /><br />&ndash;&gt;
+                    <ul class="weui-uploader__files " id="view_chat_head" style="margin-left: 1px">
+                        &lt;!&ndash;<li class="weui-uploader__file" style="background-image:url(../images/pic_160.png)"></li>&ndash;&gt;
+                    </ul>
+                    <div class="weui-uploader__input-box">
+                        <input id="chat_head" class="weui-uploader__input js_file_chat_head" type="file" accept="image/*"  multiple="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->
+<div class="weui-gallery" id="gallery">
+    <span class="weui-gallery__img" id="galleryImg"></span>
+    <div class="weui-gallery__opr">
+        <a href="javascript:" class="weui-gallery__del">
+            <i class="weui-icon-delete weui-icon_gallery-delete"></i>
+        </a>
+    </div>
+</div>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell weui-cell_switch">
+        <div class="weui-cell__bd">上传图片/可选</div>
+        <div class="weui-cell__ft">
+            <label for="switchtp" class="weui-switch-cp">
+                <input id="switchtp" class="weui-switch-cp__input" type="checkbox" onclick="uploadtp_Set()">
+                <div class="weui-switch-cp__box"></div>
+            </label>
+        </div>
+    </div>
+
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <div class="weui-uploader" id="topbox" style="display: none">
+                <div class="weui-uploader__hd">
+                    <p class="weui-uploader__title">上传现场图片</p>
+                </div>
+                <div class="weui-uploader__bd">
+                    <ul class="weui-uploader__files" id="uploaderFiles">
+
+                    </ul>
+                    <div class="weui-uploader__input-box">
+                        <input id="uploaderInput" class="weui-uploader__input zjxfjs_file" type="file" accept="image/*" multiple="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+<!--上传视频-->
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell weui-cell_switch">
+        <div class="weui-cell__bd">上传视频/可选</div>
+        <div class="weui-cell__ft">
+            <label for="switchtp_video" class="weui-switch-cp">
+                <input id="switchtp_video" class="weui-switch-cp__input" type="checkbox" onclick="uploadtp_Set_video()">
+                <div class="weui-switch-cp__box"></div>
+            </label>
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <div class="weui-uploader" id="topbox_video" style="display: none">
+                <div class="weui-uploader__hd">
+                    <p class="weui-uploader__title">上传现场视频</p>
+                </div>
+                <div class="weui-gallery" id="chat_head_gallery_video">
+                    <span class="weui-gallery__img" id="chat_head_galleryImg_video"></span>
+                    <div class="weui-gallery__opr">
+                        <a href="javascript:" class="weui-gallery__del chat_head_delete ">
+                            <i class="weui-icon-delete weui-icon_gallery-delete"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="weui-uploader__bd">
+
+                    <span id="percentagetop_video"></span>
+
+                    <ul class="weui-uploader__files " id="view_chat_head_video" style="margin-left: 1px">
+
+                    </ul>
+                    <div class="weui-uploader__input-box">
+                        <input id="chat_wideo" class="weui-uploader__input js_file_chat_head"  type="file" accept="video/*"   multiple="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  style="margin-top:20px;margin-bottom: 30px;">
+    <input onclick="submit()"  class="weui-btn weui-btn_primary" style="width:90%;font-size:20px;" value="提交" type="button" >
+</div>
+
+</div>
+
+</body>
+<script>
+    mui.init();
+    $(function() {
+        var tmpl = '<li class="weui-uploader__file" style="background-image:url(#url#)"></li>',
+            $gallery = $("#gallery"),
+            $galleryImg = $("#galleryImg"),
+            $uploaderInput = $("#uploaderInput"),
+            $uploaderFiles = $("#uploaderFiles");
+
+        $uploaderInput.on("change", function(e) {
+            var src, url = window.URL || window.webkitURL || window.mozURL,
+                files = e.target.files;
+            for(var i = 0, len = files.length; i < len; ++i) {
+                var file = files[i];
+
+                if(url) {
+                    src = url.createObjectURL(file);
+                } else {
+                    src = e.target.result;
+                }
+
+                $uploaderFiles.append($(tmpl.replace('#url#', src)));
+            }
+        });
+        var index; //第几张图片
+        $uploaderFiles.on("click", "li", function() {
+            index = $(this).index();
+            $galleryImg.attr("style", this.getAttribute("style"));
+            $gallery.fadeIn(100);
+        });
+        $gallery.on("click", function() {
+            $gallery.fadeOut(100);
+        });
+        //删除图片
+        $(".weui-gallery__del").click(function() {
+            $uploaderFiles.find("li").eq(index).remove();
+            var array = [];
+            main_pic = main_pic.substring(0,main_pic.length-1);
+            array = main_pic.split('|');
+            array.splice(index,1);
+            main_pic = "";
+            for (var i = 0;i<array.length;i++) {
+                main_pic += array[i].toString()+"|";
+            }
+        });
+    });
+</script>
+
+<script>
+    var main_pic="";
+    var video="";
+    var pics="";
+    function getParam(key){
+        // 获取参数
+        var url = window.location.search;
+        // 正则筛选地址栏
+        var reg = new RegExp("(^|&)"+ key +"=([^&]*)(&|$)");
+        // 匹配目标参数
+        var result = url.substr(1).match(reg);
+        //返回参数值
+        return result ? decodeURIComponent(result[2]) : null;
+    }
+    var inspect_type = decodeURI(getParam("inspect_type"));
+    var department_id=getParam("department_id");
+    //公司唯一标识
+    var social_credit_code = getParam("ent_id");
+    var userId=getParam("user_id");
+    //社会信用代码
+    var sCode = getParam("social_credit_code");
+    //获取被检查单位信息
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            url:  "../data/getCompanyMsg",
+            data: {
+                social_credit_code: social_credit_code
+            },
+            dataType: "json",
+            async: true,
+            success: function (data) {
+                if(data.data.length!=0) {
+                    var CHECKED_UNIT = data.data[0].unit_name;
+                    var UNIT_NUMBER = social_credit_code;
+                    var ADDRESS= data.data[0].unit_address;
+                    var REPRESENT_PEOPLE = data.data[0].legal_person;
+
+                    if (typeof(CHECKED_UNIT) === "undefined" || CHECKED_UNIT == "") {
+                        CHECKED_UNIT = "无记录";
+                    }
+
+                    if (typeof(UNIT_NUMBER) === "undefined"  || UNIT_NUMBER == "") {
+                        UNIT_NUMBER = "无记录";
+                    }
+
+                    if (typeof(ADDRESS) === "undefined"  || ADDRESS == "") {
+                        ADDRESS = "无记录";
+                    }
+
+                    if (typeof(REPRESENT_PEOPLE) === "undefined"  || REPRESENT_PEOPLE == "") {
+                        REPRESENT_PEOPLE = "无记录";
+                    }
+
+                    $("#CHECKED_UNIT").val(CHECKED_UNIT);
+                    $("#UNIT_NUMBER").val(UNIT_NUMBER);
+                    $("#ADDRESS").val(ADDRESS);
+                    $("#REPRESENT_PEOPLE").val(REPRESENT_PEOPLE);
+                    $("#REPRESENT_MOBILE").val("***");
+                    // $("#CHECKED_START_TIME").val(CHECKED_START_TIME);
+                }else {
+                    alert("请手动输入被检查单位信息！")
+                }
+
+            }
+        });
+    });
+
+    $("#CHECKED_START_TIME").datetimePicker();
+    function time(){
+        var time=new Date();
+        var y=time.getFullYear();
+        var M=time.getMonth()+1;
+        M = M < 10 ? ('0' + M) : M;
+        var d=time.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        var h=time.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        var m=time.getMinutes();
+        m = m < 10 ? ('0' + m) : m;
+        return y+"-"+M+"-"+d+" "+h+":"+m;
+    }
+    document.getElementById("CHECKED_START_TIME").value=time();
+
+    //添加检查人
+    function addCheckMen() {
+        var i = (document.getElementById("checkMenBox").children.length)/3+1;
+        i = i+1;
+        var CHECK_PEOPLE = "CHECK_PEOPLE" + i;
+        var CARD_NUMBER = "CARD_NUMBER" + i;
+        var CHECK_UNIT = "CHECK_UNIT" + i;
+        var id1 = "person" + i;
+        var id2 = "number" + i;
+        var id3 = "unit" + i;
+        $("#checkMenBox").append("<div class=\"weui-cell\" id="+id1+">\n" +
+            "            <div class=\"weui-cell__hd\"><label class=\"weui-label\">检查人员"+i+"</label></div>\n" +
+            "            <div class=\"weui-cell__bd\">\n" +
+            "                <input class=\"weui-input\" type=\"text\" placeholder=\"请输入检查人员\"  id="+CHECK_PEOPLE+" >\n" +
+            "            </div>\n" +
+            "        </div>\n" +
+            "        <div class=\"weui-cell\" id="+id2+">\n" +
+            "            <div class=\"weui-cell__hd\"><label class=\"weui-label\">证件号"+i+"</label></div>\n" +
+            "            <div class=\"weui-cell__bd\">\n" +
+            "                <input class=\"weui-input\" type=\"text\" placeholder=\"请输入证件号\"  id="+CARD_NUMBER+" >\n" +
+            "            </div>\n" +
+            "        </div>\n" +
+            "        <div class=\"weui-cell\" id="+id3+">\n" +
+            "            <div class=\"weui-cell__hd\"><label class=\"weui-label\">检查单位"+i+"</label></div>\n" +
+            "            <div class=\"weui-cell__bd\">\n" +
+            "                <input class=\"weui-input\" type=\"text\" placeholder=\"请输入检查单位\"  id="+CHECK_UNIT+">\n" +
+            "            </div>\n" +
+            "        </div>")
+    }
+
+    //删除人员
+
+    function delectCheckMen() {
+        var h = (document.getElementById("checkMenBox").children.length)/3+1;
+        if(h<2){
+            alert("请至少添加一个检查人员");
+        }
+        var id1 = "person" + h;
+        var id2 = "number" + h;
+        var id3 = "unit" + h;
+        document.getElementById(id1).remove();
+        document.getElementById(id2).remove();
+        document.getElementById(id3).remove();
+    }
+
+    //选择风险点
+    $("#Risk_Point").picker({
+        title: "请选择风险点",
+        cols: [
+            {
+                textAlign: 'center',
+                values: [ '重点要害单位', '人员密集性场所', '高层建筑', '地下建筑','其他']
+            }
+        ]
+    });
+
+
+    function uploadtp_Set_video() {
+        if( $("#switchtp_video").prop("checked") == true){
+            document.getElementById("topbox_video").style.display ="";
+        }else{
+            document.getElementById("topbox_video").style.display ="none";
+        }
+    }
+    //document.getElementById("itemFs").style.display ="none";
+    function hide1() {
+        if( $("#switchtp_fs").prop("checked") == true){
+            document.getElementById("itemFs").style.display ="";
+        }else{
+            document.getElementById("itemFs").style.display ="none";
+        }
+    }
+
+    function uploadtp_Set() {
+        if( $("#switchtp").prop("checked") == true){
+            document.getElementById("topbox").style.display ="";
+        }else{
+            document.getElementById("topbox").style.display ="none";
+        }
+    }
+
+    function submit() {
+        //向后台传参数
+        //检查人员信息
+
+        var CHECK_PEOPLE = [];
+        var CARD_NUMBER = [];
+        var CHECK_UNIT = [];
+        var h = (document.getElementById("checkMenBox").children.length)/3+1;
+        for(var i=1;i<=h;i++){
+            CHECK_PEOPLE.push($("#CHECK_PEOPLE"+i).val());
+            CARD_NUMBER.push($("#CARD_NUMBER"+i).val());
+            CHECK_UNIT.push($("#CHECK_UNIT"+i).val());
+        }
+        //检查内容
+        var CHECK_ITEM = [];
+        var checkbox_length = document.getElementById("checkbox").children.length;
+        for(var x=1;x<=checkbox_length;x++){
+            if($("#checkbox"+x).is(":checked")==true){
+                CHECK_ITEM.push(document.getElementById("checkedItem"+x).textContent);
+            }
+        }
+
+
+        var param = {};
+        param["CHECKED_UNIT"] = $("#CHECKED_UNIT").val();
+        param["UNIT_NUMBER"] = social_credit_code;
+        param["ADDRESS"] = $("#ADDRESS").val();
+        param["REPRESENT_PEOPLE"] = $("#REPRESENT_PEOPLE").val();
+        param["REPRESENT_MOBILE"] = $("#REPRESENT_MOBILE").val();
+        param["RISK_POINT"] = $("#Risk_Point").val();
+        param["CHECK_START_TIME"] = $("#CHECKED_START_TIME").val();
+        param["CHECK_PEOPLE"] = CHECK_PEOPLE.join("__");
+        param["CARD_NUMBER"] = CARD_NUMBER.join("__");
+        param["CHECK_UNIT"] = CHECK_UNIT.join("__");
+        param["CHECK_ITEM"] = CHECK_ITEM.join("__");
+        param["CHECK_DESC"] = $("#check_desc").val();
+        param["CHECK_IMG"] = main_pic;
+        param["CHECK_VIDEO"] = video;
+        param["OTHER_IMG"] = pics;
+        param["inspect_type"] = inspect_type;
+        param["department_id"] = department_id;
+
+        if(param["CHECK_DESC"] == ""){
+            alert("请填写检查情况！！");
+            document.getElementById("check_desc").focus();
+            return false;
+        }
+
+        if(param["CHECK_PEOPLE"] == ""){
+            alert("请填写检查人员！！");
+            document.getElementById("CHECK_PEOPLE1").focus();
+            return false;
+        }
+        if(param["CARD_NUMBER"] == ""){
+            alert("请填写检查人员证件号！");
+            document.getElementById("CARD_NUMBER1").focus();
+            return false;
+        }
+        if(param["CHECK_UNIT"] == ""){
+            alert("请填写检查单位！");
+            document.getElementById("CHECK_UNIT1").focus();
+            return false;
+        }
+        /*if(param["CHECK_IMG"] == ""){
+            alert("请上传现场图片！");
+            return false;
+        }*/
+        if(param["CHECKED_UNIT"] === ""){
+            alert("请填写被检查单位");
+            document.getElementById("CHECKED_UNIT").focus();
+            return false;
+        }
+        if(param["RISK_POINT"] === ""){
+            alert("请选择风险点");
+            document.getElementById("Risk_Point").focus();
+            return false;
+        }
+        $.post("../addData/insertCheckItem",param,function (data) {
+            alert(data.msg);
+            window.location.href="../FireFighting/checkSignPage?createTime="+data.date+"&social_credit_code="+social_credit_code+"&userId="+userId+"&sCode="+sCode;
+        })
+    }
+    $(function () {
+        var xhr;
+        var video_url="";
+        var filesId = document.getElementById('chat_wideo');//获取id
+        filesId.addEventListener('change', selectFile);
+        function  selectFile() {
+            $.showLoading();
+            var files = event.target.files;
+            if (files.length === 0) {
+                return;
+            }
+            UpladFileVideo();
+        }
+        //上传视屏
+        function UpladFileVideo() {
+            var fileObj = document.getElementById("chat_wideo").files[0]; // js 获取文件对象
+            var url = "../upLoderPic/uploadVideo"; // 接收上传文件的后台地址
+            var form = new FormData(); // FormData 对象
+            form.append("file", fileObj); // 文件对象
+            xhr = new XMLHttpRequest();  // XMLHttpRequest 对象
+            xhr.open("post", url, true); //post方式，url为服务器请求地址，true 该参数规定请求是否异步处理。
+            xhr.onload = uploadotherCompleteVideo; //请求完成
+            xhr.onerror = uploadFailedVideo; //请求失败
+            xhr.upload.onloadstart = function () {//上传开始执行方法
+                ot = new Date().getTime();   //设置上传开始时间
+                oloaded = 0;//设置上传开始时，以上传的文件大小为0
+            };
+            xhr.send(form); //开始上传，发送form数据
+        }
+
+        function uploadotherCompleteVideo(evt) {
+            //服务断接收完文件返回的结果
+            var data = JSON.parse(evt.target.responseText);
+            var p = data[0].error;
+            if (p == "0") {
+                video_url = data[0].url;
+                $.hideLoading();
+                alert("视屏上传成功！");
+                $("#view_chat_head_video").append(
+                    "<video style='width: 100px;height: 100px'    controls >" +
+                    "<source src='' type='video/mp4'  id='audio_id'>" +
+                    "</video>"
+                );
+                document.getElementById("audio_id").src = "../"+video_url;
+            } else {
+                alert("视屏上传失败！");
+            }
+
+        }
+
+        function uploadFailedVideo(evt) {
+            alert("视屏上传失败！");
+        }
+    });
+
+
+</script>
+</html>

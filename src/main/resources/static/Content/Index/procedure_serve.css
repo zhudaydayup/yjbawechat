@@ -1,0 +1,366 @@
+/*
+* 全局样式
+*/
+li
+{
+    list-style-type: none;
+}
+
+/*
+* 标题样式，微信咨询、电话咨询
+*/
+header
+{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #999;
+    width: 100%;
+    background: #eee;
+}
+header:after
+{
+    content: '';
+    clear: both;
+    display: block;
+    width:100%;
+    height: 0;
+}
+header>button
+{
+    display: inline-block;
+    box-sizing: border-box;
+    text-align: center;
+    width: 50%;
+    float: left;
+    background: #eee;
+    border: 0;
+    font: bold 5vw/24px SimHei;
+    color: #777;
+}
+header>button:hover
+{
+    background: #fff;
+}
+header>button:nth-child(1) { border-right: 1px solid #999 }
+header>button:nth-child(2) { border-left: 1px solid #999 }
+header img
+{
+    height: 36px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+#procedureName
+{
+    margin-top: 15px;
+    font: bold 30px/48px SimHei;
+    text-align: center;
+}
+footer
+{
+    border-top: 3px solid #999;
+    font: bold 20px/40px SimHei;
+    text-align: center;
+    background: #ccc;
+}
+/*
+* 办理须知样式
+*/
+div.notice
+{
+    height: 216px;
+    margin: 20px 15px;
+    outline: 2px solid #ccc;
+    display: -webkit-box;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background: #eee;
+}
+div.notice>div:nth-child(1)
+{
+    width: 50px;
+    -webkit-box-flex: 0;
+    border-right: 1px solid #ccc;
+    text-align: center;
+}
+div.notice>div:nth-child(1)>p
+{
+    font: bold 28px/36px SimHei;
+    color: #333;
+}
+div.notice>div:nth-child(2)
+{
+    width: auto;
+    -webkit-box-flex: 1;
+    border-left: 1px solid #ccc;
+    padding-left: 10px;
+    padding-right: 10px;
+    font: 17px/22px SimHei;
+    letter-spacing: 0px;
+    text-indent: 2em;
+    color: #444;
+    overflow-y: hidden;
+    position: relative;
+}
+.notice_more
+{
+    width:91px;
+    height:22px;
+    position:absolute;
+    top:176px;
+    right:0px;
+    z-index:1;
+    opacity:1;
+    background:#eee;
+    text-indent:0;
+}
+div.notice img
+{
+    margin-top: 5px;
+    margin-bottom: 10px;
+    width:36px;
+}
+/*
+* 填写信息，上传照片模板
+* blocka,headera,bodya 头蓝体灰下空
+* blockb 为民警点赞
+* blockc 暂存、提交按钮
+* elema 输入框
+* elemb 上传照片
+*   seca 材料样图,上传照片
+*   secb 材料区
+* elemc 单选框
+* rela position:relative 父元素
+* relb position:absolute 铅笔
+* relc position:absolute 红色星号
+* reld position:absolute 民警点赞
+*/
+a[data-chooseImg]>img
+{
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+.blocka
+{
+    width: 100%;
+    border-top: 2px solid #457;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 15px;
+}
+.headera
+{
+    width:100%;
+    background: #56b;
+    color: white;
+    font: 26px/52px SimHei;
+    text-align: center;
+}
+.bodya
+{
+    padding-left: 20px;
+    padding-right: 20px;
+    background: #eee;
+    margin-bottom: 0;
+}
+.elema, .elemb, .elemc
+{
+    width: 100%;
+    padding: 8px 10px;
+    border-bottom: 1px solid #999;
+}
+.elema:last-child, .elemb:last-child, .elemc:last-child
+{
+    border: 0;
+}
+.rela
+{
+    position: relative;
+}
+.relb
+{
+    position: absolute;
+    top: 8px;
+    left: 18px;
+    height: 40px;
+    line-height: 40px;
+}
+.relc
+{
+    position: absolute;
+    top: 8px;
+    right: 20px;
+    height: 40px;
+    font: bold 20px/40px SimHei;
+    color: red;
+}
+.reld
+{
+    position: absolute;
+    top: 10px;
+    left: 8px;
+    height: 40px;
+}
+.bodya input[type='text']
+{
+    width: 100%;
+    height: 40px;
+    padding-left: 30px;
+    padding-right: 25px;
+    border-radius: 5px;
+    border: 1px solid #999;
+    display: block;
+    font: 20px/40px SimHei;
+}
+.elemb
+{
+    padding: 8px 0;
+    display: -webkit-box;
+}
+.seca
+{
+    width: 60px;
+    text-align: center;
+    -webkit-box-flex: 0;
+    border: 0;
+    display: table;
+    background: #eee;
+}
+button[data-modellink]
+{
+    display: inline;
+}
+.seca>img
+{
+    width: 48px;
+    display: table-cell;
+    vertical-align: middle;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+.secb
+{
+    width: auto;
+    -webkit-box-flex: 1;
+    font: bold 15px/20px SimHei;
+}
+.secb img
+{
+    width: 33.3%;
+    float: left;
+    padding: 2px;
+}
+.secb p
+{
+    color: black;
+    font: 12px/16px SimHei;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.secc
+{
+    width: 40px;
+    text-align: center;
+    -webkit-box-flex: 0;
+}
+.secc span
+{
+    text-decoration: underline;
+}
+.elemc, .elemc *
+{
+    cursor: pointer;
+}
+.activea
+{
+    outline: 2px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+    background-color: #ddd;
+    border-color: #adadad;
+}
+.elemc label
+{
+    font: bold 17px/30px SimHei;
+    padding-left: 10px;
+}
+.blockb
+{
+    width: 100%;
+    border-top: 2px solid #ccc;
+    border-bottom: 2px solid #ccc;
+    background: #eee;
+    padding: 10px 15px;
+    font: bold 16px/40px SimHei;
+    display:-webkit-box;
+}
+.blockb>div:nth-child(1) { -webkit-box-flex:0; padding-right:5px; }
+.blockb>div:nth-child(2) { -webkit-box-flex:1; }
+.blockb img
+{
+    height:24px;
+    vertical-align: middle;
+}
+.blockb input[type='text']
+{
+    width: 100%;
+    height: 40px;
+    padding-left: 30px;
+    border-radius: 5px;
+    border: 1px solid #999;
+    font: 16px/40px SimHei;
+}
+.blockc
+{
+    width: 100%;
+    padding: 20px 0;
+    font: bold 24px/40px SimHei;
+    text-align: center;
+}
+.blockc:after
+{
+    content: '';
+    clear: both;
+    display: block;
+    height: 0;
+}
+.blockc>div
+{
+    width: 50%;
+    display: inline;
+    float:left;
+}
+.blockc button
+{
+    width: 60%;
+    border: 0;
+    border-radius: 5px;
+    color: white;
+    background: #56b;
+}
+.blockd
+{
+    width: 100%;
+    padding: 20px 0;
+    font: bold 24px/40px SimHei;
+    text-align: center;
+}
+.blockd:after
+{
+    content: '';
+    clear: both;
+    display: block;
+    height: 0;
+}
+.blockd>div
+{
+    width: 50%;
+    display: inline;
+    float:left;
+}
+.blockd a
+{
+    width: 60%;
+    border: 0;
+    border-radius: 5px;
+    color: white;
+    background: #56b;
+}

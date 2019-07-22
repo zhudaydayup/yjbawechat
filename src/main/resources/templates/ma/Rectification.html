@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>整改意见书</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="description" content="">
+    <link href="../WEUI/jquery-weui.css" rel="stylesheet" />
+    <link href="../WEUI/weui.min.css" rel="stylesheet" />
+    <link href="../WEUI/demos.css" rel="stylesheet" />
+    <script src="../WEUI/jquery-2.1.4.js"></script>
+    <script src="../WEUI/fastclick.js"></script>
+    <script src="../WEUI/jquery-weui.js"></script>
+    <style>
+        li {
+            float: left;
+            width: 25%;
+            margin-left: 30px;
+            list-style-type: none;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header class='demos-header'>
+    <h1 class="demos-title">整改复查意见书</h1>
+</header>
+
+<!--<div class="weui-cells__title"><lable id="CHECKE_UNIT"></lable>：</div>-->
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">被检查单位:</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" type="text" placeholder="请输入被检查单位" id="CHECKE_UNIT" >
+        </div>
+    </div>
+</div>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">整改时间:</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" type="text"  id="CHECKED_START_TIME" >
+        </div>
+    </div>
+</div>
+<!--<div class="weui-cells__title"> 本机关于<lable id="CHECKED_START_TIME"></lable>作出了责令整改指令书[()应急责改[]()号]，经过对你单位整改情况进行复查，提出如下意见：</div>-->
+<!--<div>-->
+    <!--<textarea class="weui-textarea" placeholder="请输入复查意见"  id="CHECKE_OPINION"  rows="5"></textarea>-->
+<!--</div>-->
+<!--<div class="weui-cell__hd">-->
+    <!--请输入复查意见:-->
+<!--</div>-->
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">复查意见:</label></div>
+        <div class="weui-cell__bd">
+        </div>
+    </div>
+</div>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__bd" >
+            <textarea class="weui-textarea" placeholder="请输入复查意见"  id="CHECKE_OPINION"  rows="5"></textarea>
+            <!--<div class="weui-textarea-counter" id="contentNum"><span>0</span>/140</div>-->
+        </div>
+    </div>
+</div>
+
+
+
+<div  style="margin-top:20px;margin-bottom: 30px;">
+    <input id="NextStep" onclick="submitLaw()"  class="weui-btn weui-btn_primary" style="width:90%;font-size:20px;" value="下一步" type="button" >
+</div>
+
+
+
+<script>
+     var RECORD_ID=getUrlParam("RecordId");
+     var userId=getUrlParam("user_id");
+     var social_credit_code=getUrlParam("ent_id");
+
+    $(function () {
+        $.post("../PunishMeasure/getZhenggaiMeasureInfo",
+            {RECORD_ID: RECORD_ID},
+            function (response) {
+
+            var info = eval("("+response+")");
+                if (info[0]['CHECKE_UNIT']==""||info[0]['CHECKED_END_TIME']=="") {
+                    alert("没有责令限改数据")
+                }else
+                    $("#CHECKE_UNIT").val(info[0]['CHECKE_UNIT']);
+                    $("#CHECKED_START_TIME").val(info[0]['CHECKED_END_TIME']);
+
+        });
+
+
+    });
+
+    function submitLaw() {
+        var ajaxPram = {};
+        ajaxPram["RECORD_ID"] = RECORD_ID;
+        ajaxPram["CHECKED_START_TIME"] = $('#CHECKED_START_TIME').val();
+        ajaxPram["CHECKE_UNIT"] = $('#CHECKE_UNIT').val();
+        ajaxPram["CHECKE_OPINION"] = $('#CHECKE_OPINION').val();
+        var isboolture =  ajaxPram["RECORD_ID"] != "" && ajaxPram["CHECKED_START_TIME"] != "" && ajaxPram["CHECKE_UNIT"] != "" &&  ajaxPram["CHECKE_OPINION"] != "" ;
+        if (isboolture) {
+            $.post("../Rectification/setRectificationInfo", ajaxPram, function (response) {
+                alert("创建成功!");
+                location.href = "../LawDictionary/Signature4?RecordId=" + RECORD_ID+"&userId="+userId+"&social_credit_code="+social_credit_code;
+            });
+        }
+        else
+            alert("请完善检查信息！");
+
+    }
+
+    //获取url参数
+    function getUrlParam(key){
+        // 获取参数
+        var url = window.location.search;
+        // 正则筛选地址栏
+        var reg = new RegExp("(^|&)"+ key +"=([^&]*)(&|$)");
+        // 匹配目标参数
+        var result = url.substr(1).match(reg);
+        //返回参数值
+        return result ? decodeURIComponent(result[2]) : null;
+    }
+
+
+</script>
+</body>
+</html>
+
+

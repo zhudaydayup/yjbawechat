@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>执法信息填写</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link rel="stylesheet"  href="../assets/css/icon.css"/>
+    <link rel="stylesheet" type="text/css"  href="../assets/css/iconfont.css"/>
+
+    <link rel="stylesheet"  href="../assets/css/example.css">
+    <link href="../WEUI/demos.css" rel="stylesheet" />
+    <link href="../WEUI/jquery-weui.css" rel="stylesheet" />
+    <link href="../WEUI/weui.min.css" rel="stylesheet" />
+    <script src="../WEUI/jquery-2.1.4.js"></script>
+    <script src="../WEUI/fastclick.js"></script>
+    <link href="../css/common.css" type="text/css" rel="stylesheet"/>
+    <link href="../css/index.css" type="text/css" rel="stylesheet"/>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/URL.js"></script>
+    <script src="../AddActivity/AddActivity.js"></script>
+    <script src="../WEUI/jquery-weui.js"></script>
+
+    <script src="../Common/zhifa/TemporaryZhiFaInspectionRecord.js"></script>
+    <style>
+        li {
+            float: left;
+            width: 25%;
+            margin-left: 30px;
+            list-style-type: none;
+        }
+
+    </style>
+
+</head>
+<body>
+<div id="mainBody">
+    <header class='demos-header'>
+        <h1 class="demos-title">现场检查记录</h1>
+    </header>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell weui-cell_switch">
+            <div class="weui-cell__bd" style="color: #999;font-size: 14px">检查开始/截止时间<span style="color: red">*</span></div>
+           <!-- <div class="weui-cell__ft">
+                <label for="switchCP1" class="weui-switch-cp">
+                    <input id="switchCP1" class="weui-switch-cp__input" type="checkbox" onclick="model_Set1()">
+                    <div class="weui-switch-cp__box"></div>
+                </label>
+            </div>-->
+        </div>
+        <div class="weui-cell" id="time001" >
+            <div class="weui-cell__hd"><label class="weui-label">开始时间<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input id="CHECKED_START_TIME"  class="weui-input" type="date" >
+            </div>
+        </div>
+        <div class="weui-cell" id="time002" style="display: none">
+            <div class="weui-cell__hd"><label class="weui-label">结束时间</label></div>
+            <div class="weui-cell__bd">
+                <input id="CHECKED_END_TIME"  class="weui-input"onchange="checkTime()" type="date" >
+            </div>
+        </div>
+    </div>
+
+    <div class="weui-cells__title" style="margin-bottom:1em">检查记录文书编号<span style="color: red">*</span>
+        <label for="switchCP2" class="weui-switch-cp" style="float:right">
+            <input id="switchCP2" class="weui-switch-cp__input" type="checkbox" onclick="model_Set2()">
+            <div class="weui-switch-cp__box"></div>
+        </label>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">所属地区<span style="color: red">*</span></label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" type="text" placeholder="请输入所属地区" id="AUDIT_AREA" >
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">文书编号<span style="color: red">*</span></label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" type="text" placeholder="请输入文书编号" id="AUDIT_RECORD" >
+        </div>
+    </div>
+
+
+    <div class="weui-cells__title" style="margin-bottom:1em">被检查单位信息<span style="color: red">*</span>
+        <label for="switchCP2" class="weui-switch-cp" style="float:right">
+            <input id="switchCP2" class="weui-switch-cp__input" type="checkbox" onclick="model_Set2()">
+            <div class="weui-switch-cp__box"></div>
+        </label>
+    </div>
+
+
+    <div class="weui-cells weui-cells_form" id="box1" style="display: none">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">被检单位<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入被检单位" id="CHECKED_UNIT" >
+            </div>
+        </div>
+        <div class="weui-cell" style="display: none">
+            <div class="weui-cell__hd"><label class="weui-label" >信用代码<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入社会信用代码" id="UNIT_NUMBER" >
+            </div>
+        </div>
+        <div class="weui-cell" >
+            <div class="weui-cell__hd"><label class="weui-label" >单位地址<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入被检单位" id="ADDRESS" >
+            </div>
+        </div>
+        <div class="weui-cell" >
+            <div class="weui-cell__hd"><label class="weui-label" >法定代表<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="被检单位法人" id="REPRESENT_PEOPLE" >
+            </div>
+        </div>
+        <div class="weui-cell" >
+            <div class="weui-cell__hd"><label class="weui-label" >法人电话</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="输入法人电话" id="REPRESENT_MOBILE" >
+            </div>
+        </div>
+
+    </div>
+
+    <div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">被检查场所<span style="color: red">*</span></label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" type="text" placeholder="请输入被检查场所" id="CHECKED_LOCATION" >
+        </div>
+    </div>
+    </div>
+
+
+    <div class="weui-cells__title">负责人信息（可以修改）<span style="color: red">*</span></div>
+
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">负责人<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="被检查单位现场负责人" id="CHECKED_REPRESENT_PEOPLE" >
+            </div>
+        </div>
+
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">性别<span style="color: red">*</span></label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" style="text-align: right" id="CHECKED_SEX" type="text" value="" readonly="" placeholder="请选择">
+                </div>
+            </div>
+
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">身份证</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入代表人证件号" id="CHECKED_REPRESENT_NUMBER" >
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">职务</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入代表人职务" id="CHECKED_REPRESENT_DUTY" >
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">电话<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="number" placeholder="请输入号码" pattern="[0-9]*" id="CHECKED_REPRESENT_MOBILE">
+            </div>
+        </div>
+
+    </div>
+    <div class="weui-cells__title" style="margin-bottom:1em">检查单位信息（可以修改）<span style="color: red">*</span>
+        <label for="switchCP3" class="weui-switch-cp" style="float:right">
+            <input id="switchCP3" class="weui-switch-cp__input" type="checkbox" onclick="model_Set3()">
+            <div class="weui-switch-cp__box"></div>
+        </label>
+    </div>
+
+    <div class="weui-cells weui-cells_form" id="box3" style="display: none">
+
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">检查方<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入检查方" id="area" >
+            </div>
+        </div>
+
+        <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">检查单位<span style="color: red">*</span></label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" type="text" placeholder="请输入检查单位" id="CHECK_UNIT1" >
+        </div>
+        </div>
+
+
+
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">检查人员<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入检查人员" id="CHECK_PEOPLE1" >
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">证件号<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入证件号" id="CARD_NUMBER1" >
+            </div>
+        </div>
+        <!--<a class="weui-cell weui-cell_link" onclick="addCheckMenSet()">
+            <div class="weui-cell__bd">添加其他检查人员</div>
+        </a>-->
+
+
+        <div id="othercheck" style="display: none;margin-top: 0px"class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">检查单位2</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请输入检查单位" id="CHECK_UNIT2" >
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">检查人员2</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请输入检查人员" id="CHECK_PEOPLE2" >
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">证件号2</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请输入证件号" id="CARD_NUMBER2" >
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <div class="weui-cells__title">见证人信息</div>
+
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">见证人</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入见证人" id="WITNESS_PEOPLE">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">证件号</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入证件号" id="WITNESS_NUMBER" >
+            </div>
+        </div>
+        <div class="weui-cells weui-cells_radio"style="margin-top: 0px">
+            <label class="weui-cell weui-check__label">
+                <div class="weui-cell__bd">
+                    <p>男</p>
+                </div>
+                <div class="weui-cell__ft">
+                    <input name="WITNESS_SEX" class="weui-check"  type="radio"  value="男">
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+            <label class="weui-cell weui-check__label">
+
+                <div class="weui-cell__bd">
+                    <p>女</p>
+                </div>
+                <div class="weui-cell__ft">
+                    <input name="WITNESS_SEX" class="weui-check"  type="radio" value="女">
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+        </div>
+
+    </div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell weui-cell_switch">
+            <div class="weui-cell__bd"style="color: #999;font-size: 14px">专家信息</div>
+            <div class="weui-cell__ft">
+                <label for="switchop" class="weui-switch-cp">
+                    <input id="switchop" class="weui-switch-cp__input" type="checkbox" onclick="uploadtp_Set()">
+                    <div class="weui-switch-cp__box"></div>
+                </label>
+            </div>
+        </div>
+
+            <div class="weui-cells weui-cells_form" id="otherbox" style="margin-top: 0px;display: none">
+
+
+            </div>
+
+
+        <a class="weui-cell weui-cell_link" >
+            <!--<div class="weui-cell__bd" onclick="addCheckExpertSet()">添加其他专家</div>-->
+            <div class="weui-cell__bd" onclick="deleteCheckExpertSet()" style="color: red">删除</div>
+        </a>
+
+    </div>
+
+    <div class="weui-cells__title">检查情况</div>
+    <div id="legalCheck">
+
+    </div>
+
+    <div id="notLegalCheck">
+
+    </div>
+
+    <div  style="margin-top:20px;margin-bottom: 30px;">
+        <input id="NextStep" onclick="submitRecord()"  class="weui-btn weui-btn_primary" style="width:90%;font-size:20px;" value="下一步" type="button" >
+    </div>
+
+    <div  style="margin-top:20px;margin-bottom: 30px;">
+        <input onclick="temporaryRecord()"  class="weui-btn weui-btn_primary" style="width:90%;font-size:20px;" value="暂存" type="button" >
+    </div>
+
+</div>
+
+<div class='demos-content-padded' id="loadingmore" style="display: none">
+    <div class="weui-loadmore">
+        <i class="weui-loading"></i>
+        <span class="weui-loadmore__tips">正在提交创建</span>
+    </div>
+    <div class="weui-loadmore weui-loadmore_line">
+        <span class="weui-loadmore__tips">欢迎使用</span>
+    </div>
+    <div class="weui-loadmore weui-loadmore_line weui-loadmore_dot">
+        <span class="weui-loadmore__tips"></span>
+    </div>
+</div>
+
+<script>
+    $("#CHECKED_SEX").picker({
+        title: "",
+        cols: [
+            {
+                textAlign: 'center',
+                values: ['选择','男', '女']
+            }
+        ],
+        onChange: function(p, v, dv) {
+            console.log(p, v, dv);
+        },
+        onClose: function(p, v, d) {
+            if (p.value == "男") {
+                document.getElementById("CHECKED_SEX").value = "男";
+            }
+            if (p.value == "女") {
+                document.getElementById("CHECKED_SEX").value = "女";
+            }
+            console.log("close");
+        },
+
+    });
+
+</script>
+</body>
+</html>
+
+

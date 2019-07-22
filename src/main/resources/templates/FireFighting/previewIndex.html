@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>预览检查记录</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link rel="stylesheet" href="../WEUI/css/weui.css"/>
+    <link rel="stylesheet" href="../WEUI/css/jquery-weui.min.css"/>
+    <link rel="stylesheet" href="../WEUI/css/example.css"/>
+    <script src="../WEUI/js/jquery.min.js"></script>
+    <script src="../WEUI/js/jquery-weui.min.js"></script>
+    <style>
+        li {
+            float: left;
+            width: 25%;
+            margin-left: 30px;
+            list-style-type: none;
+        }
+    </style>
+</head>
+<body>
+<div id="mainBody">
+    <div class="page msg_success js_show">
+        <div class="weui-msg">
+            <div class="weui-msg__icon-area"><i class="weui-icon-info weui-icon_msg"style="font-size: 120px"></i></div>
+            <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title">已生成消防安全检查通知书</h2>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area" id="PdfUrl">
+                    <a class="weui-btn weui-btn_primary" onclick="pdfView()" >预览消防安全检查通知书</a>
+                </p>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" onclick="qrView()">预览二维码</a>
+                </p>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" onclick="next()">下一步</a>
+                </p>
+            </div>
+            <div class="weui-msg__extra-area">
+                <div class="weui-footer">
+                    <p class="weui-footer__links">
+                        <a class="weui-footer__link" href="javascript:void(0);"></a>
+                    </p>
+                    <p class="weui-footer__text">南京理工大学提供技术支持</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function getParam(name){
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r!=null) return unescape(r[2]);
+        return null;
+    }
+    var social_credit_code=getParam("social_credit_code");
+    var userId=getParam("userId");
+    var ID=getParam("ID");
+    var url = getParam("url");
+    var Record_ID = getParam("Record_ID");
+    var sCode = getParam("sCode");
+    var arr=[];
+    arr = url.split("_");
+    function pdfView() {
+        window.location.href='../FireFighting/pdfView?url='+arr[0];
+    }
+    function next() {
+        $.ajax({
+            type:"POST",
+            url:"../data/putFireFightingDate",
+            data:{
+                RecordId: Record_ID,
+                userId:userId,
+                sCode:sCode
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data.msg == "非限期整改！"){
+                    alert("上报成功");
+                }
+                else {
+                alert("上报失败");
+                }
+            }
+        });
+        window.location.href="../page/fireFightinrOtherPdf?RecordId="+Record_ID+"&ID="+ID+"&social_credit_code="+social_credit_code+"&userId="+userId+"&sCode="+sCode;
+    }
+    function qrView() {
+        window.location.href='../FireFighting/qrView?url='+arr[1];
+    }
+</script>
+</body>
+</html>
+
+

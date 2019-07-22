@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>执法信息填写</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link rel="stylesheet"  href="../assets/css/icon.css"/>
+    <link rel="stylesheet" type="text/css"  href="../assets/css/iconfont.css"/>
+
+    <link rel="stylesheet"  href="../assets/css/example.css">
+    <link href="../WEUI/demos.css" rel="stylesheet" />
+    <link href="../WEUI/jquery-weui.css" rel="stylesheet" />
+    <link href="../WEUI/weui.min.css" rel="stylesheet" />
+    <script src="../WEUI/jquery-2.1.4.js"></script>
+    <script src="../WEUI/fastclick.js"></script>
+    <link href="../css/common.css" type="text/css" rel="stylesheet"/>
+    <link href="../css/index.css" type="text/css" rel="stylesheet"/>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/URL.js"></script>
+
+    <script src="../WEUI/jquery-weui.js"></script>
+    <script src="../Common/zhifa/TemporaryZhiFaUrl.js"></script>
+    <style>
+        li {
+            float: left;
+            width: 25%;
+            margin-left: 30px;
+            list-style-type: none;
+        }
+
+    </style>
+
+</head>
+<body>
+<header class='demos-header'>
+    <h1 class="demos-title">执法监督检查通知书</h1>
+</header>
+<div id="mainBody">
+
+    <div class="page msg_success js_show">
+        <div class="weui-msg">
+            <div class="weui-msg__icon-area"><i class="weui-icon-success weui-icon_msg"></i></div>
+            <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title">执法监督检查记录已经成功提交</h2>
+                <!--<p class="weui-msg__desc">您的执法监督检查通知书已经成功提交</p>-->
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" onclick="getNoticePdf()">生成执法监督检查通知书</a>
+                    <!--<a class="weui-btn weui-btn_default" href="javascript:history.back();">再来一次</a>-->
+                </p>
+            </div>
+
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" onclick="temporaryRecord()">暂存</a>
+                </p>
+            </div>
+
+            <div class="weui-msg__extra-area">
+                <div class="weui-footer">
+                    <p class="weui-footer__links">
+                        <a class="weui-footer__link" href="javascript:void(0);"></a>
+                    </p>
+                    <p class="weui-footer__text">南京理工大学提供技术支持</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    var RecordId=getUrlParam("RecordId");
+    var one_id = getUrlParam("one_id");
+    var two_id=decodeURI(getUrlParam("two_id"));
+    two_id=encodeURI(two_id);
+    var userId = getUrlParam("userId");
+    var title = getUrlParam("title");
+
+    //获取url参数
+    function getUrlParam(key){
+        // 获取参数
+        var url = window.location.search;
+        // 正则筛选地址栏
+        var reg = new RegExp("(^|&)"+ key +"=([^&]*)(&|$)");
+        // 匹配目标参数
+        var result = url.substr(1).match(reg);
+        //返回参数值
+        return result ? decodeURIComponent(result[2]) : null;
+    }
+    function getNoticePdf(){
+        $.ajax({
+            type: "POST",
+            url:  "../pdf/create_notice_pdf",
+            data: {
+                RecordId: RecordId
+            },
+            dataType: "json",
+            async: true,
+            success: function (data) {
+                if (data.msg == "ok") {
+                    alert("提交成功");
+                    // $("#modal-6").modal("hide");
+                    window.location.href="../Notice/QRCode?RecordId="+RecordId+"&one_id="+one_id+"&userId="+userId+"&title="+title+"&two_id="+two_id+"&social_credit_code="+social_credit_code;
+
+                }
+                else {
+                    alert("提交失败，请重新提交");
+
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>
+
+

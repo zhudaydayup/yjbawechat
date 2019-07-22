@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>执法信息填写</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link rel="stylesheet"  href="../assets/css/icon.css"/>
+    <link rel="stylesheet" type="text/css"  href="../assets/css/iconfont.css"/>
+    <link rel="stylesheet"  href="../assets/css/example.css">
+    <link href="../WEUI/demos.css" rel="stylesheet" />
+    <link href="../WEUI/jquery-weui.css" rel="stylesheet" />
+    <link href="../WEUI/weui.min.css" rel="stylesheet" />
+    <script src="../WEUI/jquery-2.1.4.js"></script>
+    <script src="../WEUI/fastclick.js"></script>
+    <link href="../css/common.css" type="text/css" rel="stylesheet"/>
+    <link href="../css/index.css" type="text/css" rel="stylesheet"/>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/URL.js"></script>
+    <script src="../js/picuploding.js"></script>
+    <script src="../js/photoCompress.js"></script>
+    <script src="../WEUI/jquery-weui.js"></script>
+    <script src="../Yang/zelingxiugai.js"></script>
+    <script src="../Common/zhifa/TemporaryZhiFaZeLing.js"></script>
+
+    <style>
+        li {
+            float: left;
+            width: 25%;
+            margin-left: 30px;
+            list-style-type: none;
+        }
+    </style>
+    <script>
+        var zeLingId = GetQueryString("RecordId");
+
+        $(function () {
+            getZhiFaRenById();
+        });
+
+        function getZhiFaRenById() {
+            $.ajax({
+                type:"get",
+                url:"../PdfThree/getZhiFaRenById",
+                data:{zeLingId:zeLingId},
+                dataType:"json",
+                success:function (response) {
+                    $("#CHECKE_UNIT").val(response[0][0]["CHECKED_UNIT"]);
+                    $("#EXECUTE_PEOPLE").val(response[0][0]["CHECK_PEOPLE1"]);
+                    $("#CARD_NUMBER").val(response[0][0]["CARD_NUMBER1"]);
+                    if(response[0][0]["CHECK_PEOPLE2"]!=null){
+                        $("#EXECUTE_PEOPLE2").val(response[0][0]["CHECK_PEOPLE2"]);
+                        $("#CARD_NUMBER2").val(response[0][0]["CARD_NUMBER2"]);
+                        document.getElementById("otherbox").style.display="";
+                    }
+
+                }
+            })
+        }
+        //获取存在的问题列表
+        $(function () {
+            getProblemById();
+        });
+        function getProblemById() {
+            $.ajax({
+                type:"get",
+                url:"../PdfThree/getProblemById",
+                data:{zeLingId:zeLingId},
+                dataType:"json",
+                success:function (response) {
+                    var jsonRecord =  response  ;
+                    var div="";
+                    for (var i=0;i<jsonRecord[0].length;i++){
+                        var id1 = "time"+i;
+                        div+=
+                            '<div class="weui-cells weui-cells_checkbox">' +
+                            '<label class="weui-cell weui-check__label" for="' + jsonRecord[0][i]["CREATE_TIME"] + '">' +
+                            '<div class="weui-cell__hd">' +
+                            '<input type="checkbox" class="weui-check" name="checkbox1" id="' + jsonRecord[0][i]["CREATE_TIME"] + '"  value="' + jsonRecord[0][i]["CREATE_TIME"] + '">' +
+                            '<i class="weui-icon-checked"></i>' +
+                            '</div>'+
+                            '<div class="weui-cell__bd">'+
+                            '<p>'+ jsonRecord[0][i]['CHECKE_DETAIL']+'</p>'+
+                            '</div>' +
+                            '</label>' +
+                            '</div>'+
+                            '<div class="weui-cells weui-cells_form">'+
+                            '<div class="weui-cell" >'+
+                            '<div class="weui-cell__hd"><label class="weui-label">整改时间：<span style="color: red">*</span></label></div>'+
+                            '<div class="weui-cell__bd">'+
+                            '<input id='+id1+' name="checkbox2" class="weui-input" type="date" >'+
+                            '</div>'+
+                            '</div>'+
+                            '</div>';
+                    }
+                    $("#CHECKE_PROBLEM").html(div)
+                }
+            })
+        }
+    </script>
+
+
+</head>
+<body>
+<header class='demos-header'>
+    <h1 class="demos-title">责令限期整改指令书</h1>
+</header>
+<div class="weui-cells__title" style="margin-bottom:1em">责令限期整改指令书编号<span style="color: red">*</span>
+<label for="switchCP2" class="weui-switch-cp" style="float:right">
+<input id="switchCP2" class="weui-switch-cp__input" type="checkbox" onclick="model_Set2()">
+<div class="weui-switch-cp__box"></div>
+</label>
+</div>
+<div class="weui-cell">
+<div class="weui-cell__hd"><label class="weui-label">所属地区<span style="color: red">*</span></label></div>
+<div class="weui-cell__bd">
+<input class="weui-input" type="text" placeholder="请输入所属地区" id="ZF_ORDER_DEADLINE_AREA" >
+</div>
+</div>
+<div class="weui-cell">
+<div class="weui-cell__hd"><label class="weui-label">文书编号<span style="color: red">*</span></label></div>
+<div class="weui-cell__bd">
+<input class="weui-input" type="text" placeholder="请输入文书编号" id="ZF_ORDER_DEADLINE_RECORD" >
+</div>
+</div>
+<div id="mainBody">
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">被检查单位</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入被检查单位" id="CHECKE_UNIT" >
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="weui-cells weui-cells_form" style="display: none">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">截止日期</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" style="text-align: right" id="CHECKED_END_TIME" type="text" value="" readonly="" placeholder="请选择">
+            </div>
+        </div>
+    </div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">检查人姓名:</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入检查人姓名" id="EXECUTE_PEOPLE" >
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">检查人证件号:</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入检查人证件号" id="CARD_NUMBER" >
+            </div>
+        </div>
+    </div>
+
+<div class="weui-cells weui-cells_form" id="otherbox" style="display: none">
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">检查人姓名:</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" type="text" placeholder="请输入检查人姓名" id="EXECUTE_PEOPLE2" >
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">检查人证件号:</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" type="text" placeholder="请输入检查人证件号" id="CARD_NUMBER2" >
+        </div>
+    </div>
+</div>
+
+<div class="weui-cells weui-cells_form" id="CHECKE_PROBLEM">
+</div>
+
+
+    <div  style="margin-top:20px;margin-bottom: 30px;">
+        <input id="NextStep" onclick="submitLaw()"  class="weui-btn weui-btn_primary" style="width:90%;font-size:20px;" value="下一步" type="button" >
+    </div>
+</div>
+
+<div class='demos-content-padded' id="loadingmore" style="display: none">
+    <div class="weui-loadmore">
+        <i class="weui-loading"></i>
+        <span class="weui-loadmore__tips">正在提交创建</span>
+    </div>
+    <div class="weui-loadmore weui-loadmore_line">
+        <span class="weui-loadmore__tips">欢迎使用</span>
+    </div>
+    <div class="weui-loadmore weui-loadmore_line weui-loadmore_dot">
+        <span class="weui-loadmore__tips"></span>
+    </div>
+</div>
+
+<script>
+ /*   $("#CHECKED_END_TIME").picker({
+        title: "",
+        cols: [
+            {
+                textAlign: 'center',
+                values: ['一周', '30日', '60日', '90日']
+            }
+        ],
+        onChange: function(p, v, dv) {
+            console.log(p, v, dv);
+        },
+        onClose: function(p, v, d) {
+            console.log("close");
+        },
+
+    });*/
+</script>
+</body>
+</html>
+
+

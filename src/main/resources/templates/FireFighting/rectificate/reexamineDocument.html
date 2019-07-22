@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>复查</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link rel="stylesheet"  href="../assets/css/icon.css"/>
+    <link rel="stylesheet" type="text/css"  href="../assets/css/iconfont.css"/>
+    <link rel="stylesheet"  href="../assets/css/example.css">
+    <link href="../WEUI/demos.css" rel="stylesheet" />
+    <link href="../WEUI/jquery-weui.css" rel="stylesheet" />
+    <link href="../WEUI/weui.min.css" rel="stylesheet" />
+    <script src="../WEUI/jquery-2.1.4.js"></script>
+    <script src="../WEUI/fastclick.js"></script>
+    <link href="../css/common.css" type="text/css" rel="stylesheet"/>
+    <link href="../css/index.css" type="text/css" rel="stylesheet"/>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/URL.js"></script>
+    <script src="../WEUI/jquery-weui.js"></script>
+    <style>
+        li {
+            float: left;
+            width: 25%;
+            margin-left: 30px;
+            list-style-type: none;
+        }
+
+    </style>
+
+</head>
+<body>
+<div id="mainBody">
+
+    <div class="page msg_success js_show">
+        <div class="weui-msg">
+            <div class="weui-msg__icon-area"><i class="weui-icon-success weui-icon_msg"></i></div>
+            <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title">执法记录已经成功提交</h2>
+                <!--<p class="weui-msg__desc">你的执法记录已经成功提交</p>-->
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" onclick="getPdfRecord()">生成复查文书</a>
+                    <!--<a class="weui-btn weui-btn_default" href="javascript:history.back();">再来一次</a>-->
+                </p>
+            </div>
+            <div class="weui-msg__extra-area">
+                <div class="weui-footer">
+                    <p class="weui-footer__links">
+                        <a class="weui-footer__link" href="javascript:void(0);"></a>
+                    </p>
+                    <p class="weui-footer__text">南京理工大学提供技术支持</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    var RecordId=getUrlParam("RecordId");
+    var social_credit_code=getUrlParam("social_credit_code");
+    var userId=getUrlParam("userId");
+
+    //获取url参数
+    function getUrlParam(key){
+        // 获取参数
+        var url = window.location.search;
+        // 正则筛选地址栏
+        var reg = new RegExp("(^|&)"+ key +"=([^&]*)(&|$)");
+        // 匹配目标参数
+        var result = url.substr(1).match(reg);
+        //返回参数值
+        return result ? decodeURIComponent(result[2]) : null;
+    }
+    function getPdfRecord(){
+        $.ajax({
+            type: "POST",
+            url:  "../reexamine/createReexaminePdf",
+            data: {
+                RecordId: RecordId
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data.msg == "ok") {
+                    // $.ajax({
+                    //     type:"POST",
+                    //     url:"../data/putExpertHiddenDangerDate",
+                    //     data:{RecordId: RecordId},
+                    //     dataType: "json",
+                    //     async: false,
+                    //     success: function (data) {
+                    //         if (data.msg == "执法记录创建成功！"){
+                    //             alert("上报成功");
+                    //         }
+                    //         else {
+                    //             alert("上报失败");
+                    //         }
+                    //     }
+                    // });
+
+                    // $.ajax({
+                    //     type: "POST",
+                    //     url:  "../data/getPushData",
+                    //     data: {
+                    //         RecordId: RecordId
+                    //     },
+                    //     dataType: "json",
+                    //     async: false,
+                    //     success: function (data) {
+                    //         $.ajax({
+                    //             type:"POST",
+                    //             url: "http://www.co2center.net/zfbd/storage/push?",
+                    //             data: {
+                    //                 recordId: RecordId,
+                    //                 e_name: data.e_name,
+                    //                 e_code: data.e_code,
+                    //                 check_time: data.check_time,
+                    //                 check_people: data.check_people,
+                    //                 expert: data.expert,
+                    //                 df_code_url: data.df_code_url,
+                    //                 pdf_url: data.pdf_url
+                    //             },
+                    //             dataType: "json",
+                    //             async: false,
+                    //             success:function(data) {
+                    //                 if (data.msg.equals("success")){
+                    //
+                    //                 }
+                    //             }
+                    //         })
+                    //     }
+                    // });
+                    alert("提交成功");
+                    // $("#modal-6").modal("hide");
+                    window.location.href="../page/successfulReexamine?RecordId="+RecordId+"&social_credit_code="+social_credit_code+"&userId="+userId;
+                }
+                else {
+                    alert("提交失败，请重新提交");
+
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>
+
+

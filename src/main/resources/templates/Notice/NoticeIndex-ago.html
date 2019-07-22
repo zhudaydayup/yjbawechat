@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head id="Head1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>执法信息填写</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link href="../WEUI/demos.css" rel="stylesheet" />
+    <link href="../WEUI/jquery-weui.css" rel="stylesheet" />
+    <link href="../WEUI/weui.min.css" rel="stylesheet" />
+    <script src="../WEUI/jquery-2.1.4.js"></script>
+    <script src="../WEUI/fastclick.js"></script>
+    <script th:src="@{/Notice/AddActivity.js}"></script>
+    <script src="../WEUI/jquery-weui.js"></script>
+</head>
+<body>
+<!--<div class="weui-search-bar" id="searchBar">
+    <form class="weui-search-bar__form">
+        <div class="weui-search-bar__box">
+            <i class="weui-icon-search"></i>
+            <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="">
+            <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+        </div>
+        <label class="weui-search-bar__label" id="searchText">
+            <i class="weui-icon-search"></i>
+            <span>搜索</span>
+        </label>
+    </form>
+    <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
+</div>-->
+
+<div id="mainBody">
+    <header class='demos-header'>
+        <h1 class="demos-title">现场检查通知书</h1>
+    </header>
+    <div class="weui-cells__title" style="margin-bottom:1em">被检查单位信息
+
+            <label for="switchCP" class="weui-switch-cp" style="float:right">
+                <input id="switchCP" class="weui-switch-cp__input" type="checkbox" onclick="model_Set()">
+                <div class="weui-switch-cp__box"></div>
+            </label>
+
+    </div>
+
+    <div class="weui-cells weui-cells_form" id="box1" style="display: none">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">被检查单位<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入被检查单位" id="CHECKED_UNIT" >
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">信用代码<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入社会信用代码" id="UNIT_NUMBER" >
+            </div>
+        </div>
+       <!-- <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">单位地址</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入被检单位" id="ADDRESS" >
+            </div>
+        </div>-->
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">法定代表人<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="输入法定代表人" id="REPRESENT_PEOPLE" >
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">法人联系电话</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="number" pattern="[0-9]*" placeholder="输入法人联系电话" id="REPRESENT_MOBILE" >
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell" id="time001">
+            <div class="weui-cell__hd"><label class="weui-label">检查时间</label></div>
+            <div class="weui-cell__bd">
+                <input id="CHECKED_START_TIME"  class="weui-input" type="date" >
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">单位地址<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入被检单位地址" id="ADDRESS" >
+            </div>
+        </div>
+    </div>
+
+    <div class="weui-cells__title">检查单位信息<span style="color: red">*</span></div>
+    <div class="weui-cells weui-cells_form">
+
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">选择检查方<span style="color: red">*</span></label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" style="text-align: right" id="area" type="text" value="" readonly="" placeholder="请选择">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">检查人1<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <div>
+                    <table>
+                        <tr>
+                            <td>
+                                <input class="weui-input" type="text" placeholder="请输入检查人名称"id="CHECK_PEOPLE1"   onkeyup="txtchange1()" onblur="lost1()"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="tbcontent1" class="hidden">
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!--<input class="weui-input" type="text" placeholder="请输入专家名称"id="EXPERT_NAME1"  onkeyup="txtChange()">-->
+            </div>
+                <!--<input class="weui-input" style="text-align: right"  type="text" placeholder="请输入检查人" id="CHECK_PEOPLE1" >-->
+            </div>
+
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">证件号1<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入证件号" id="CARD_NUMBER1" >
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">检查单位1<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入检查单位" id="CHECK_UNIT1">
+            </div>
+        </div>
+
+    </div>
+        <div id="othercheck" style="display: none;margin-top: 0px"class="weui-cells weui-cells_form">
+
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">检查人2</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请输入检查人员" id="CHECK_PEOPLE2" >
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">证件号2</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请输入证件号" id="CARD_NUMBER2" >
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">检查单位2</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请输入检查单位" id="CHECK_UNIT2" >
+                </div>
+            </div>
+        </div>
+        <a class="weui-cell weui-cell_link" onclick="addCheckMenSet()">
+            <div class="weui-cell__bd">添加其他检查人员</div>
+        </a>
+    </div>
+
+
+
+
+
+    <div class="weui-cells__title">专家信息</div>
+        <div class="weui-cells weui-cells_form"id="otherbox" style="margin-top: 0px">
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">专家1</label></div>
+                <div class="weui-cell__bd">
+                    <!--<input class="weui-input" type="text" placeholder="请输入专家名称" id="EXPERT_NAME1" >-->
+                    <div>
+                        <table>
+                            <tr>
+                                <td>
+                                    <input class="weui-input" type="text" placeholder="请输入专家名称"id="EXPERT_NAME1"   onkeyup="txtchange()" onblur="lost()"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="tbcontent" class="hidden">
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">专家单位1</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请输入专家单位"id="EXPERT_UNIT1"  >
+                </div>
+            </div>
+            <div id="otherexpert" style="display: none;margin-top: 0px"class="weui-cells weui-cells_form">
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">专家2</label></div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="text" placeholder="请输入专家名称"  id="EXPERT_NAME2">
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">专家单位2</label></div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="text" placeholder="请输入专家单位"id="EXPERT_UNIT2"  >
+                    </div>
+                </div>
+            </div>
+            <a class="weui-cell weui-cell_link" onclick="addCheckExpertSet()">
+                <div class="weui-cell__bd">添加其他专家</div>
+            </a>
+        </div>
+
+ </div>
+
+    <div class="weui-cells__title">检查项目</div>
+
+    <div id="CheckList">
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cells weui-cells_checkbox" id="List" style="width: 100%">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="weui-cells__title">检查方式</div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell__bd">
+            <div style="width:90%;margin-left: 5%;margin-top: 5%;margin-bottom: 5%">
+                <textarea class="weui-textarea" placeholder="请输入检查方式" rows="1" id="NOTICE_WAY"></textarea>
+            </div>
+            <!--<div class="weui-textarea-counter"><span>0</span>/200</div>-->
+        </div>
+    </div>
+    <div style="margin-top: 0px"class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">检查联系人</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入检查联系人"  id="NOTICE_CONTACTS">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">电话</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="number" placeholder="请输入电话"id="NOTICE_PHONE"  >
+            </div>
+        </div>
+    </div>
+    <div  style="margin-top:20px;margin-bottom: 30px;">
+        <input id="NextStep" onclick="submitRecord()"  class="weui-btn weui-btn_primary" style="width:90%;font-size:20px;" value="下一步" type="button" >
+    </div>
+
+
+<div class='demos-content-padded' id="loadingmore" style="display: none">
+    <div class="weui-loadmore">
+        <i class="weui-loading"></i>
+        <span class="weui-loadmore__tips">正在提交创建</span>
+    </div>
+    <div class="weui-loadmore weui-loadmore_line">
+        <span class="weui-loadmore__tips">欢迎使用</span>
+    </div>
+    <div class="weui-loadmore weui-loadmore_line weui-loadmore_dot">
+        <span class="weui-loadmore__tips"></span>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        document.getElementById("NOTICE_WAY").value = "现场检查";
+    });
+
+    var arr = [];
+    var arr1 = [];
+    function txtchange(){
+        var word = $("#EXPERT_NAME1").val();
+        $.ajax({
+            type:"GET",
+            url:"../data/getExpertMsg?word="+word,
+            datatype: "json",
+            success:function (data){
+                $("#tbcontent").html("");
+                var expertName = data.expertName;
+                var expertDepartment = data.expertDepartment;
+                for(var i=0;i<expertName.length;i++){
+                    arr.push(expertName[i]);
+                    arr1.push(expertDepartment[i]);
+                    $("#tbcontent").append('<div class="item" onclick="mousedown(this)">' + expertName[i] + '</div>');
+                }
+                $("#tbcontent").slideDown();
+            }
+        })
+    }
+    function mousedown(object) {
+        $("#EXPERT_NAME1").val($(object).text());
+
+        var h=0;
+        for(var x=0;x<arr.length;x++){
+            if(arr[x]==$("#EXPERT_NAME1").val()){
+                h=x;
+                document.getElementById("EXPERT_UNIT1").value = arr1[h];
+            }
+        }
+        $("#tbcontent").fadeOut();
+    }
+    function lost() {
+        $("#tbcontent").fadeOut();
+    }
+
+
+
+    $("#area").picker({
+        title: "",
+        cols: [
+            {
+                textAlign: 'center',
+                values: ['选择','宁','江北', '玄', '秦','建','鼓','栖','经开','雨','江','浦','六','溧','高']
+            }
+        ],
+        onChange: function(p, v, dv) {
+            console.log(p, v, dv);
+        },
+        onClose: function(p, v, d) {
+            if (p.value == "宁") {
+                document.getElementById("CHECK_UNIT1").value = "南京市应急管理局";
+            }
+            if (p.value == "江北") {
+                document.getElementById("CHECK_UNIT1").value = "南京市江北新区应急管理局";
+            }
+            if (p.value == "玄") {
+                document.getElementById("CHECK_UNIT1").value = "南京市玄武区应急管理局";
+            }
+            if (p.value == "秦") {
+                document.getElementById("CHECK_UNIT1").value = "南京市秦淮区应急管理局";
+            }
+            if (p.value == "建") {
+                document.getElementById("CHECK_UNIT1").value = "南京市建邺区应急管理局";
+            }
+            if (p.value == "鼓") {
+                document.getElementById("CHECK_UNIT1").value = "南京市鼓楼区应急管理局";
+            }
+            if (p.value == "栖") {
+                document.getElementById("CHECK_UNIT1").value = "南京市栖霞区应急管理局";
+            }
+            if (p.value == "经开") {
+                document.getElementById("CHECK_UNIT1").value = "南京市经济开发区应急管理局";
+            }
+            if (p.value == "雨") {
+                document.getElementById("CHECK_UNIT1").value = "南京市雨花台区应急管理局";
+            }
+            if (p.value == "江") {
+                document.getElementById("CHECK_UNIT1").value = "南京市江宁区应急管理局";
+            }
+            if (p.value == "浦") {
+                document.getElementById("CHECK_UNIT1").value = "南京市浦口区应急管理局";
+            }
+            if (p.value == "六") {
+                document.getElementById("CHECK_UNIT1").value = "南京市六合区应急管理局";
+            }
+            if (p.value == "溧") {
+                document.getElementById("CHECK_UNIT1").value = "南京市溧水区应急管理局";
+            }
+            if (p.value == "高") {
+                document.getElementById("CHECK_UNIT1").value = "南京市高淳区应急管理局";
+            }
+            console.log("close");
+        },
+
+    });
+
+    var arr2 = [];
+    var arr3 = [];
+    var arr4 = [];
+    function txtchange1(){
+        var word = $("#CHECK_PEOPLE1").val();
+        $.ajax({
+            type:"GET",
+            url:"../data/getZjCheckeMsg?word="+word,
+            dataType: "json",
+            success:function (data){
+                $("#tbcontent1").html("");
+                var checkeName = data.checkeName;
+                var mobile = data.mobile;
+                var enforcement_card = data.enforcement_card;
+                for(var i=0;i<checkeName.length;i++){
+                    arr2.push(checkeName[i]);
+                    arr3.push(mobile[i]);
+                    arr4.push(enforcement_card[i]);
+                    $("#tbcontent1").append('<div class="item" onclick="mousedown1(this)">' + checkeName[i] + '</div>');
+                }
+                $("#tbcontent1").slideDown();
+            }
+        })
+    }
+    function mousedown1(object) {
+        document.getElementById("CHECK_PEOPLE1").value = $(object).text();
+        var h=0;
+        for(var x=0;x<arr2.length;x++){
+            if( arr2[x]== $("#CHECK_PEOPLE1").val() ){
+                h=x;
+                // alert(arr3[h]);
+                document.getElementById("NOTICE_PHONE").value = arr3[h];
+                document.getElementById("CARD_NUMBER1").value = arr4[h];
+                document.getElementById("NOTICE_CONTACTS").value = arr2[h];
+            }
+        }
+        $("#tbcontent1").fadeOut();
+    }
+    function lost1() {
+        $("#tbcontent1").fadeOut();
+    }
+
+
+</script>
+</body>
+</html>
+
+

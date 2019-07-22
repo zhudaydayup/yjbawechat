@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>检查信息填写</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link rel="stylesheet"  href="../assets/css/icon.css"/>
+    <link rel="stylesheet" type="text/css"  href="../assets/css/iconfont.css"/>
+
+    <link rel="stylesheet"  href="../assets/css/example.css">
+    <link href="../WEUI/demos.css" rel="stylesheet" />
+    <link href="../WEUI/jquery-weui.css" rel="stylesheet" />
+    <link href="../WEUI/weui.min.css" rel="stylesheet" />
+    <script src="../WEUI/jquery-2.1.4.js"></script>
+    <script src="../WEUI/fastclick.js"></script>
+    <link href="../css/common.css" type="text/css" rel="stylesheet"/>
+    <link href="../css/index.css" type="text/css" rel="stylesheet"/>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/URL.js"></script>
+    <script src="../ExAddActivity/AddActivity.js"></script>
+    <script src="../WEUI/jquery-weui.js"></script>
+
+    <script src="../Common/TemporaryInspectionRecord.js"></script>
+    <style>
+        li {
+            float: left;
+            width: 25%;
+            margin-left: 30px;
+            list-style-type: none;
+        }
+
+    </style>
+</head>
+<body>
+<div id="mainBody">
+    <div class="weui-cells weui-cells_form" >
+        <div class="weui-cell weui-cell_switch" style="display: none">
+            <div class="weui-cell__bd">检查开始/截止时间</div>
+            <!--<div class="weui-cell__ft">-->
+                <!--<label for="switchtp_time" class="weui-switch-cp">-->
+                    <!--<input id="switchtp_time" class="weui-switch-cp__input" type="checkbox" checked="checked" onclick="hide()">-->
+                    <!--<div class="weui-switch-cp__box"></div>-->
+                <!--</label>-->
+            <!--</div>-->
+        </div>
+        <div id="stime">
+            <div class="weui-cell" id="time001">
+            <div class="weui-cell__hd"><label class="weui-label">开始时间</label></div>
+            <div class="weui-cell__bd">
+                <input id="CHECKED_START_TIME1"  class="weui-input"  >
+            </div>
+            </div>
+            <div class="weui-cell" id="time002" style="display: none">
+                <div class="weui-cell__hd"><label class="weui-label">结束时间</label></div>
+                <div class="weui-cell__bd">
+                    <input id="CHECKED_END_TIME"  class="weui-input"   >
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="weui-cells__title">自动获取（可以修改）社会信用代码</div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__bd">被检查单位信息</div>
+            <div class="weui-cell__ft">
+                <label for="switchtp_fs" class="weui-switch-cp">
+                    <input id="switchtp_fs" class="weui-switch-cp__input" type="checkbox"  onclick="hide1()">
+                    <div class="weui-switch-cp__box"></div>
+                </label>
+            </div>
+        </div>
+        <div id="itemFs" style="display: none">
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">被检单位</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请输入被检单位" id="CHECKED_UNIT" >
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">信用代码</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请输入社会信用代码" id="UNIT_NUMBER" >
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">单位地址</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请输入被检查单位" id="ADDRESS" >
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">法定代表</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="被检查单位法人" id="REPRESENT_PEOPLE" >
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">法人电话</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="tel" pattern="[0-9]*" placeholder="输入法人电话" id="REPRESENT_MOBILE" >
+                </div>
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">被检查场所<span style="color: red">*</span></label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入被检查场所" id="CHECKED_LOCATION" >
+            </div>
+        </div>
+    </div>
+
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell weui-cell_switch">
+            <div class="weui-cell__bd">专家信息<span style="color: red">*</span></div>
+        </div>
+
+        <div class="weui-cells weui-cells_form" id="otherbox" style="margin-top: 0px" >
+
+            <div class="weui-cell" id="expert1">
+                <div class="weui-cell__hd"><label class="weui-label" >专家名称1</label></div>
+                <div class="weui-cell__bd">
+                    <div>
+                        <table>
+                            <tr>
+                                <td>
+                                    <input class="weui-input" type="text" placeholder="请输入专家名称" id="EXPERT_NAME1"   onkeyup="txtchange1(1)" onblur="lost1(1)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="tbcontent1" class="hidden">
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!--<input class="weui-input" type="text" placeholder="请输入专家名称"id="EXPERT_NAME1"  onkeyup="txtChange()">-->
+                </div>
+            </div>
+            <div class="weui-cell" id="expertName1">
+                <div class="weui-cell__hd"><label class="weui-label" >专家单位1</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请输入专家单位" id="EXPERT_UNIT1" >
+                </div>
+            </div>
+        </div>
+        <a class="weui-cell weui-cell_link">
+            <div class="weui-cell__bd" onclick="addCheckExpertSet()">添加</div>
+            <div class="weui-cell__bd" onclick="deleteCheckExpertSet()" style="color: red">删除</div>
+        </a>
+    </div>
+
+    <div class="weui-cells__title">检查情况</div>
+    <div id="legalCheck">
+
+
+    </div>
+
+    <div id="notLegalCheck">
+
+    </div>
+    <div  style="margin-top:20px;margin-bottom: 30px;">
+        <input onclick="temporaryRecord()"  class="weui-btn weui-btn_primary" style="width:90%;font-size:20px;" value="暂存" type="button" >
+    </div>
+    <div  style="margin-top:20px;margin-bottom: 30px;">
+        <input id="NextStep" onclick="submitRecord()"  class="weui-btn weui-btn_primary" style="width:90%;font-size:20px;" value="下一步" type="button" >
+    </div>
+
+
+
+</div>
+
+<div class='demos-content-padded' id="loadingmore" style="display: none">
+    <div class="weui-loadmore">
+        <i class="weui-loading"></i>
+        <span class="weui-loadmore__tips">正在提交创建</span>
+    </div>
+    <div class="weui-loadmore weui-loadmore_line">
+        <span class="weui-loadmore__tips">欢迎使用</span>
+    </div>
+    <div class="weui-loadmore weui-loadmore_line weui-loadmore_dot">
+        <span class="weui-loadmore__tips"></span>
+    </div>
+</div>
+<script>
+    $("#CHECKED_START_TIME1,#CHECKED_END_TIME").datetimePicker();
+    function time(){
+        var time=new Date();
+        var y=time.getFullYear();
+        var M=time.getMonth()+1;
+        M = M < 10 ? ('0' + M) : M;
+        var d=time.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        var h=time.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        var m=time.getMinutes();
+        m = m < 10 ? ('0' + m) : m;
+        return y+"-"+M+"-"+d+" "+h+":"+m;
+    }
+    document.getElementById("CHECKED_START_TIME1").value=time();
+    document.getElementById("CHECKED_END_TIME").value=time();
+
+
+    document.getElementById("itemFs").style.display ="none";
+    function hide1() {
+        if( $("#switchtp_fs").prop("checked") == true){
+            document.getElementById("itemFs").style.display ="";
+        }else{
+            document.getElementById("itemFs").style.display ="none";
+        }
+    }
+    var arr = [];
+    var arr1 = [];
+    function txtchange(){
+        var word = $("#EXPERT_NAME1").val();
+        $.ajax({
+            type:"GET",
+            url:"../data/getExpertMsg?word="+word,
+            dataType: "json",
+            success:function (data){
+                $("#tbcontent").html("");
+                var expertName = data.expertName;
+                var expertDepartment = data.expertDepartment;
+                for(var i=0;i<expertName.length;i++){
+                    arr.push(expertName[i]);
+                    arr1.push(expertDepartment[i]);
+                    $("#tbcontent").append('<div class="item" onclick="mousedown(this)">' + expertName[i] + '</div>');
+                }
+                $("#tbcontent").slideDown();
+            }
+        })
+    }
+    function mousedown(object) {
+        $("#EXPERT_NAME1").val($(object).text());
+
+        var h=0;
+        for(var x=0;x<arr.length;x++){
+            if(arr[x]==$("#EXPERT_NAME1").val()){
+                h=x;
+                document.getElementById("EXPERT_UNIT1").value = arr1[h];
+            }
+        }
+        $("#tbcontent").fadeOut();
+    }
+    function lost() {
+        $("#tbcontent").fadeOut();
+        arr = [];
+        arr1 = [];
+    }
+    //是否添加其他专家
+    function addCheckExpertSet() {
+        var h = (document.getElementById("otherbox").children.length)/2;
+        h = h+1;
+        var id1 = "expert"+h;
+        var id2 = "expertName"+h;
+        var id3 = "EXPERT_UNIT" + h;
+        var id4 = "EXPERT_NAME" + h;
+        var id5 = "tbcontent" + h;
+        $("#otherbox").append(
+            "            <div class=\"weui-cell\" id="+id2+">\n" +
+            "                <div class=\"weui-cell__hd\"><label class=\"weui-label\" >专家名称"+h+"</label></div>\n" +
+            "                <div class=\"weui-cell__bd\">\n" +
+            "                    <div>\n" +
+            "                        <table>\n" +
+            "                            <tr>\n" +
+            "                                <td>\n" +
+            "                                    <input class=\"weui-input\" type=\"text\" placeholder=\"请输入专家名称\" id="+id4+"   onkeyup=\"txtchange1("+h+")\" onblur=\"lost1("+h+")\"/>\n" +
+            "                                </td>\n" +
+            "                            </tr>\n" +
+            "                            <tr>\n" +
+            "                                <td>\n" +
+            "                                    <div id="+id5+" class=\"hidden\">\n" +
+            "                                    </div>\n" +
+            "                                </td>\n" +
+            "                            </tr>\n" +
+            "                        </table>\n" +
+            "                    </div>\n" +
+            "                    <!--<input class=\"weui-input\" type=\"text\" placeholder=\"请输入专家名称\"id=\"EXPERT_NAME1\"  onkeyup=\"txtChange()\">-->\n" +
+            "                </div>\n" +
+            "            </div>\n" +
+            "            <div class=\"weui-cell\" id="+id1+">\n" +
+            "                <div class=\"weui-cell__hd\"><label class=\"weui-label\" >专家单位"+h+"</label></div>\n" +
+            "                <div class=\"weui-cell__bd\">\n" +
+            "                    <input class=\"weui-input\" type=\"text\" placeholder=\"请输入专家单位\" id="+id3+" >\n" +
+            "                </div>\n" +
+            "            </div>"
+        );
+    }
+
+    function deleteCheckExpertSet() {
+        var h = (document.getElementById("otherbox").children.length)/2;
+        if (h != 1) {
+            var id1 = "expert"+h;
+            var id2 = "expertName"+h;
+            document.getElementById(id1).remove();
+            document.getElementById(id2).remove();
+        }
+
+    }
+
+    var param = 0;
+    function txtchange1(h){
+        var word = $("#EXPERT_NAME"+h).val();
+        $.ajax({
+            type:"GET",
+            url:"../data/getExpertMsg?word="+word,
+            dataType: "json",
+            success:function (data){
+                $("#tbcontent"+h).html("");
+                var expertName = data.expertName;
+                var expertDepartment = data.expertDepartment;
+                param = h;
+                for(var i=0;i<expertName.length;i++){
+                    arr.push(expertName[i]);
+                    arr1.push(expertDepartment[i]);
+                    $("#tbcontent"+h).append('<div class="item" onclick="mousedown1(this)">' + expertName[i] + '</div>');
+                }
+                $("#tbcontent"+h).slideDown();
+            }
+        })
+    }
+    function mousedown1(object) {
+        $("#EXPERT_NAME"+param).val($(object).text());
+
+        var m=0;
+        for(var x=0;x<arr.length;x++){
+            if(arr[x]==$("#EXPERT_NAME"+param).val()){
+                m=x;
+                document.getElementById("EXPERT_UNIT"+param).value = arr1[m];
+            }
+        }
+        $("#tbcontent"+param).fadeOut();
+        arr = [];
+        arr1 = [];
+    }
+    function lost1(h) {
+        $("#tbcontent"+h).fadeOut();
+
+    }
+
+</script>
+</body>
+</html>
+
+

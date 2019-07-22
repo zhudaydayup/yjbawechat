@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>重大隐患上报</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="description" content="">
+    <link href="../WEUI/jquery-weui.css" rel="stylesheet" />
+    <link href="../WEUI/weui.min.css" rel="stylesheet" />
+    <link href="../WEUI/demos.css" rel="stylesheet" />
+    <script src="../WEUI/jquery-2.1.4.js"></script>
+    <script src="../WEUI/fastclick.js"></script>
+    <script src="../WEUI/jquery-weui.js"></script>
+    <style>
+        li {
+            float: left;
+            width: 25%;
+            margin-left: 30px;
+            list-style-type: none;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header class='demos-header'>
+    <h1 class="demos-title">隐患上报</h1>
+</header>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">被检查单位：</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" type="text" placeholder="请输入被检查单位" id="CHECKED_UNIT" >
+        </div>
+    </div>
+</div>
+
+<div class="weui-cells__title"> 根据《中华人民共和国消防法》第五十三条的规定，本机于<lable id="CHECKED_START_TIME"></lable>现场检查时,发现你单位有下列违法违规行为和事故隐患:</div>
+
+<!--<div class="weui-cells weui-cells_checkbox" id="CHECKE_DETAIL">-->
+    <!--&lt;!&ndash;<label class="weui-cell weui-check__label" for="s11">&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="weui-cell__hd">&ndash;&gt;-->
+    <!--&lt;!&ndash;<input type="checkbox" class="weui-check" name="checkbox1" id="s11" >&ndash;&gt;-->
+    <!--&lt;!&ndash;<i class="weui-icon-checked"></i>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="weui-cell__bd">&ndash;&gt;-->
+    <!--&lt;!&ndash;<p id="CHECKE_DETAIL"></p>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;</label>&ndash;&gt;-->
+
+<!--</div>-->
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">隐患级别<span style="color: red">*</span></label></div>
+        <div class="weui-cell__bd">
+            <input id="Risk_Level"  class="weui-input" value="重大">
+        </div>
+    </div>
+</div>
+
+<div class="weui-cells__title">具体问题：</div>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__bd" >
+            <textarea class="weui-textarea" placeholder=""  id="PROCESS_DECISION" rows="5"> </textarea>
+            <!--<div class="weui-textarea-counter" id="contentNum"><span>0</span>/140</div>-->
+        </div>
+    </div>
+</div>
+
+<div class="weui-cells__title"> 你单位（场所）应当采取措施，<lable>确保消防安全</lable>对消防安全违法行为<lable>将依法予以处罚</lable></div>
+
+
+
+<div  style="margin-top:20px;margin-bottom: 30px;">
+    <input id="NextStep" onclick="submitLaw()"  class="weui-btn weui-btn_primary" style="width:90%;font-size:20px;" value="提交隐患" type="button" >
+</div>
+
+
+<script>
+
+   /* $("#Risk_Level").picker({
+        title: "请选择隐患级别",
+        cols: [
+            {
+                textAlign: 'center',
+                values: ['请选择隐患级别', '一般', '较大','重大']
+            }
+        ]
+    });*/
+
+
+
+    var RECORD_ID=getUrlParam("RecordId");
+    var social_credit_code=getUrlParam("social_credit_code");
+    var userId=getUrlParam("userId");
+
+    var CHECKED_UNIT;
+    var CHECKED_START_TIME;
+    var CHECKE_DETAIL;
+    $(function () {
+        getZhiFaRenById();
+    });
+
+    function getZhiFaRenById() {
+        $.ajax({
+            type:"get",
+            url:"../timeRectification/getMessageById",
+            data:{RECORD_ID:RECORD_ID},
+            dataType:"json",
+            success:function (response) {
+                $("#CHECKED_UNIT").val(response[0][0]["CHECKED_UNIT"]);
+                CHECKED_START_TIME = response[0][0]["CHECK_START_TIME"];
+                document.getElementById('CHECKED_UNIT').innerHTML = CHECKED_UNIT;
+                document.getElementById('CHECKED_START_TIME').innerHTML = CHECKED_START_TIME;
+            }
+        })
+    }
+
+    function submitLaw() {
+
+        var ajaxPram = {};
+        ajaxPram["PROCESS_DECISION"] = $('#PROCESS_DECISION').val();
+        ajaxPram["RECORD_ID"] = RECORD_ID;
+        ajaxPram["CHECKE_UNIT"] = $("#CHECKED_UNIT").val();
+        ajaxPram["CHECKED_START_TIME"] = CHECKED_START_TIME;
+         ajaxPram["Risk_Level"] = $("#Risk_Level").val();
+        var isboolture =  ajaxPram["PROCESS_DECISION"] != "" && ajaxPram["RECORD_ID"] != "" && ajaxPram["CHECKE_UNIT"] != "" &&  ajaxPram["CHECKED_START_TIME"] != ""&&  ajaxPram["Risk_Level"] != "" ;
+
+        if (isboolture) {
+            $.confirm("确认创建检查记录!", function () {
+                $.post("../timeRectification/setFireHiddenDangerRecord", ajaxPram, function (response) {
+                    alert("创建成功");
+                    $.ajax({
+                        type:"POST",
+                        url:"../data/putFireHiddenDangerRecordDate",
+                        data:{RecordId: RECORD_ID},
+                        dataType: "json",
+                        async: false,
+                        success: function (data) {
+                            if (data.msg == "非限期整改！"){
+                                alert("上报成功");
+                            }
+                            else {
+                                alert("上报失败");
+                            }
+                        }
+                    });
+                    location.href = "../page/fireFightinrOtherPdf?RecordId=" + RECORD_ID+"&social_credit_code="+social_credit_code+"&userId="+userId;
+                });
+            });
+        }
+        else alert("请完善检查信息")
+    }
+    //获取url参数
+    function getUrlParam(key){
+        // 获取参数
+        var url = window.location.search;
+        // 正则筛选地址栏
+        var reg = new RegExp("(^|&)"+ key +"=([^&]*)(&|$)");
+        // 匹配目标参数
+        var result = url.substr(1).match(reg);
+        //返回参数值
+        return result ? decodeURIComponent(result[2]) : null;
+    }
+
+
+</script>
+</body>
+</html>
+
+

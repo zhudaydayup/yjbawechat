@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>企业内查</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link rel="stylesheet"  href="../assets/css/icon.css"/>
+    <link rel="stylesheet" type="text/css"  href="../assets/css/iconfont.css"/>
+    <link rel="stylesheet"  href="../assets/css/example.css">
+    <link href="../WEUI/demos.css" rel="stylesheet" />
+    <link href="../WEUI/jquery-weui.css" rel="stylesheet" />
+    <link href="../WEUI/weui.min.css" rel="stylesheet" />
+    <script src="../WEUI/jquery-2.1.4.js"></script>
+    <script src="../WEUI/fastclick.js"></script>
+    <link href="../css/common.css" type="text/css" rel="stylesheet"/>
+    <link href="../css/index.css" type="text/css" rel="stylesheet"/>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/URL.js"></script>
+    <script src="../js/picuploding.js"></script>
+    <script src="../js/photoCompress.js"></script>
+    <script src="../WEUI/jquery-weui.js"></script>
+    <script src="../NoticeCheck/zelingxiugai.js"></script>
+    <style>
+        li {
+            float: left;
+            width: 25%;
+            margin-left: 30px;
+            list-style-type: none;
+        }
+    </style>
+    <script>
+        //  var checke_problem_id="";
+        var zeLingId = GetQueryString("RecordId");
+        // var zeLingId="12";
+        //获取执法人员姓名
+        $(function () {
+            getZhiFaRenById();
+        });
+
+        function getZhiFaRenById() {
+             $.post("../companyChecked/getCheckedInfo", {RECORD_ID: zeLingId}, function (response) {
+                 var jsonObj =  eval("("+response+")");
+                $("#CHECKE_UNIT").val(jsonObj[0][0]['CHECKED_UNIT']);
+                 $("#EXECUTE_PEOPLE").val(jsonObj[0][0]["CHECK_PEOPLE1"]);
+                 $("#CHECKED_START_TIME").val(jsonObj[0][0]["CREATE_TIME"]);
+                $.ajax({
+                    type: "get",
+                    url: "../companyChecked/getZhiFaRenById",
+                    data: {zeLingId: zeLingId},
+                    dataType: "json",
+                    success: function (response) {
+                        // $("#CHECKE_UNIT").val(jsonObj[0][0]["CHECKED_UNIT"]);
+
+                        // $("#CARD_NUMBER").val(response[0][0]["CARD_NUMBER1"]);
+
+                        // $("#CHECKED_END_TIME").val(response[0][0]["CHECKED_END_TIME"]);
+                    }
+                })
+             })
+        }
+        //获取存在的问题列表
+        $(function () {
+            getProblemById();
+        });
+        function getProblemById() {
+            $.ajax({
+                type:"get",
+                url:"../companyChecked/getProblemById",
+                data:{zeLingId:zeLingId},
+                dataType:"json",
+                success:function (response) {
+                    var jsonRecord =  response  ;
+                    var div="";
+                    for (var i=0;i<jsonRecord[0].length;i++){
+                        // .val(jsonRecord[i]['CHECKE_UNIT']);
+                        div+=
+                            // '<div class="weui-cells__title"style="width:50%;"> \n' +
+                            // '<i class="weui-icon-checked"></i>'+ jsonRecord[0][i]['TEMP_NAME']+'</div>\n'+
+                            '<div class="weui-cells weui-cells_checkbox">\n' +
+                            '<label class="weui-cell weui-check__label" for="' + jsonRecord[0][i]["CREATE_TIME"] + '">\n' +
+                            '<div class="weui-cell__hd">' +
+                            '<input type="checkbox" class="weui-check" name="checkbox1" id="' + jsonRecord[0][i]["CREATE_TIME"] + '"  value="' + jsonRecord[0][i]["CREATE_TIME"] + '">' +
+                            '<i class="weui-icon-checked"></i>' +
+                            '</div>'+
+                            '<div class="weui-cell__bd">\n' +
+                            '<p>'+ jsonRecord[0][i]['CHECKE_DETAIL']+'</p>\n' +
+                            '</div>\n' +
+                            '</label>\n' +
+                            '\n' +
+                            '</div>';
+                            // '<div class="weui-cell">'+
+                            // '<div class="weui-cell__bd">'+
+                            // '<textarea class="weui-textarea"  placeholder="请输入存在问题" rows="4" >' + jsonRecord[0][i]['CHECKE_DETAIL']+ '</textarea>'+
+                            // '<div class="weui-textarea-counter"><span>0</span>/200</div>'+
+                            // '</div>'+
+                            // '</div>';
+                        // $("input:checkbox[name='jsonRecord[0][i]['CREATE_TIME']']:checked").each(function() { // 遍历name=test的多选框
+                        // $(this).val();  // 每一个被选中项的值
+                        // });
+                        // var obj = document.getElementsByName("checkbox1");
+                        // for (var k=0;k<obj.length;k++){
+                        //     if(obj[k].checked){
+                        //         // alert("选中:"+obj[k].id);
+                        //         pinjke+=obj[k].value+"|";
+                        //     }else{
+                        //         // alert("未选中:"+obj[k].id);
+                        //         pinjke+=obj[k].value+"|";
+                        //     }
+                        // }
+
+                        // pinjke+=jsonRecord[0][i]['CREATE_TIME']+"|";
+                    }
+
+                    $("#CHECKE_PROBLEM").html(div)
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+<header class='demos-header'>
+    <h1 class="demos-title">违章告知书</h1>
+</header>
+<div id="mainBody">
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">承包商单位</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入单位名称" id="CHECKE_UNIT" >
+            </div>
+        </div>
+    </div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">受检时间</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入受检时间" id="CHECKED_START_TIME" >
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="weui-cells weui-cells_form">
+
+    <div class="weui-cell" id="time002">
+        <div class="weui-cell__hd"><label class="weui-label">整改期限完成时间</label></div>
+        <div class="weui-cell__bd">
+            <input id="CHECKED_END_TIME"  class="weui-input" type="datetime-local" >
+        </div>
+    </div>
+</div>
+<div class="weui-cells weui-cells_form">
+
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">检查人</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" type="text" placeholder="请输入检查人姓名" id="EXECUTE_PEOPLE" >
+        </div>
+    </div>
+
+</div>
+
+<div class="weui-cells weui-cells_form" id="CHECKE_PROBLEM">
+
+</div>
+<div class="weui-cells__title">依据<lable>《承包商单位和个人HSSE违章扣分和经济处罚对照表》第七十七条</lable>的规定,现作出如下处理决定：</div>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__bd" >
+            <textarea class="weui-textarea" placeholder="请输入处罚决定"  id="NOTICE_DETAIL" rows="5"></textarea>
+            <!--<div class="weui-textarea-counter" id="contentNum"><span>0</span>/140</div>-->
+        </div>
+    </div>
+</div>
+
+<div  style="margin-top:20px;margin-bottom: 30px;">
+    <!--<button type="button" onclick="queren_submit()" class="weui-btn weui-btn_primary" style="width:90%;font-size:20px;background-color: #337ab7">确认</button>-->
+    <input id="NextStep" onclick="submitLaw()"  class="weui-btn weui-btn_primary" style="width:90%;font-size:20px;" value="下一步" type="button" >
+</div>
+</div>
+
+<div class='demos-content-padded' id="loadingmore" style="display: none">
+    <div class="weui-loadmore">
+        <i class="weui-loading"></i>
+        <span class="weui-loadmore__tips">正在提交创建</span>
+    </div>
+    <div class="weui-loadmore weui-loadmore_line">
+        <span class="weui-loadmore__tips">欢迎使用</span>
+    </div>
+    <div class="weui-loadmore weui-loadmore_line weui-loadmore_dot">
+        <span class="weui-loadmore__tips"></span>
+    </div>
+</div>
+
+<script>
+
+</script>
+</body>
+</html>
+
+

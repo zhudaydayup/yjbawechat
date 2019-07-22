@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>责令立即改正通知书</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="description" content="">
+    <link href="../WEUI/jquery-weui.css" rel="stylesheet" />
+    <link href="../WEUI/weui.min.css" rel="stylesheet" />
+    <link href="../WEUI/demos.css" rel="stylesheet" />
+    <script src="../WEUI/jquery-2.1.4.js"></script>
+    <script src="../WEUI/fastclick.js"></script>
+    <script src="../WEUI/jquery-weui.js"></script>
+    <style>
+        li {
+            float: left;
+            width: 25%;
+            margin-left: 30px;
+            list-style-type: none;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header class='demos-header'>
+    <h1 class="demos-title">责令立即改正通知书</h1>
+</header>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">被检查单位：</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" type="text" placeholder="请输入被检查单位" id="CHECKED_UNIT" >
+        </div>
+    </div>
+</div>
+
+<div class="weui-cells__title"> 根据《中华人民共和国消防法》第五十三条的规定，本机于<lable id="CHECKED_START_TIME"></lable>现场检查时,发现你单位有下列违法违规行为和事故隐患,现责令立即改正：</div>
+
+<div class="weui-cells weui-cells_checkbox" id="CHECKE_DETAIL">
+    <!--<label class="weui-cell weui-check__label" for="s11">-->
+    <!--<div class="weui-cell__hd">-->
+    <!--<input type="checkbox" class="weui-check" name="checkbox1" id="s11" >-->
+    <!--<i class="weui-icon-checked"></i>-->
+    <!--</div>-->
+    <!--<div class="weui-cell__bd">-->
+    <!--<p id="CHECKE_DETAIL"></p>-->
+    <!--</div>-->
+    <!--</label>-->
+
+</div>
+
+<div class="weui-cells__title">具体问题：</div>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__bd" >
+            <textarea class="weui-textarea" placeholder=""  id="PROCESS_DECISION" rows="5"> </textarea>
+            <!--<div class="weui-textarea-counter" id="contentNum"><span>0</span>/140</div>-->
+        </div>
+    </div>
+</div>
+
+<div class="weui-cells__title"> 你单位（场所）应当采取措施，<lable>确保消防安全</lable>对消防安全违法行为<lable>将依法予以处罚</lable></div>
+
+
+
+<div  style="margin-top:20px;margin-bottom: 30px;">
+    <input id="NextStep" onclick="submitLaw()"  class="weui-btn weui-btn_primary" style="width:90%;font-size:20px;" value="下一步" type="button" >
+</div>
+
+
+<script>
+
+    //textarea输入触发事件
+    // function inputChange() {
+    //     var contentLength = document.getElementById("content").value.length;
+    //     $('#contentNum').text(contentLength + '/140');
+    // }
+
+
+    var social_credit_code=getUrlParam("social_credit_code");
+    var userId=getUrlParam("userId");
+    var RECORD_ID=getUrlParam("RecordId");
+    var ID = getUrlParam("ID");
+    var sCode = getUrlParam("sCode");
+    // var RECORD_ID = 32;
+
+    var CHECKED_UNIT;
+    var CHECKED_START_TIME;
+    var CHECKE_DETAIL;
+    $(function () {
+        getZhiFaRenById();
+    });
+
+    function getZhiFaRenById() {
+        $.ajax({
+            type:"get",
+            url:"../timeRectification/getMessageById",
+            data:{RECORD_ID:RECORD_ID},
+            dataType:"json",
+            success:function (response) {
+                $("#CHECKED_UNIT").val(response[0][0]["CHECKED_UNIT"]);
+                CHECKED_START_TIME = response[0][0]["CHECK_START_TIME"];
+                document.getElementById('CHECKED_UNIT').innerHTML = CHECKED_UNIT;
+                document.getElementById('CHECKED_START_TIME').innerHTML = CHECKED_START_TIME;
+                CHECKE_DETAIL = response[0][0]["CHECK_ITEM"];
+                var arr= new Array(CHECKE_DETAIL.split("__"));
+                for (var i = 0; i < arr[0].length; i++) {
+                    $("#CHECKE_DETAIL").append(
+                        '<label class="weui-cell weui-check__label" >' +
+                        '<div class="weui-cell__hd">' +
+                        '<input type="checkbox" class="weui-check" name="checkbox1" id="s11"  value="' + arr[0][i] + '">' +
+                        '<i class="weui-icon-checked"></i>' +
+                        '</div>' +
+                        '<div class="weui-cell__bd">' +
+                        '<p id="CHECKE_DETAIL">' + arr[0][i] + '</p>' +
+                        '</div>' +
+                        '</label>'
+                    )
+                }
+            }
+        })
+    }
+
+    // $(function () {
+    //
+    //         $.post("../timeRectification/getMessageById", {RECORD_ID: RECORD_ID}, function (response) {
+    //             // var info =  response ;
+    //             $("#CHECKE_UNIT").val(response[0][0]["CHECKED_UNIT"]);
+    //             // CHECKE_UNIT = info[0]['CHECKE_UNIT'];
+    //             CHECKED_START_TIME = response[0][0]["CHECK_START_TIME"];
+    //             CHECKE_DETAIL = response[0][0]["CHECK_ITEM"];
+    //             document.getElementById('CHECKE_UNIT').innerHTML = CHECKE_UNIT;
+    //             document.getElementById('CHECKED_START_TIME').innerHTML = CHECKED_START_TIME;
+    //             // document.getElementById('CHECKE_DETAIL').innerHTML = CHECKE_DETAIL;
+    //
+    //
+    //             for (var i = 0; i < info[0].length; i++) {
+    //                 $("#CHECKE_DETAIL").append(
+    //                     '<label class="weui-cell weui-check__label" >' +
+    //                     '<div class="weui-cell__hd">' +
+    //                     '<input type="checkbox" class="weui-check" name="checkbox1" id="s11"  value="' + response[0][i]["CHECK_ITEM"] + '">' +
+    //                     '<i class="weui-icon-checked"></i>' +
+    //                     '</div>' +
+    //                     '<div class="weui-cell__bd">' +
+    //                     '<p id="CHECKE_DETAIL">' + response[0][i]['CHECK_ITEM'] + '</p>' +
+    //                     '</div>' +
+    //                     '</label>'
+    //                 )
+    //             }
+    //         });
+    //     });
+    function submitLaw() {
+
+        var obj = document.getElementsByName("checkbox1");
+
+        var msg1="";
+        for (var k=0;k<obj.length;k++){
+            if(obj[k].checked){
+                msg1+=obj[k].value+"|";
+            }
+        }
+        // msg1=encodeURI(msg1);
+
+        var ajaxPram = {};
+        ajaxPram["PROCESS_DECISION"] = $('#PROCESS_DECISION').val();
+        ajaxPram["RECORD_ID"] = RECORD_ID;
+        ajaxPram["CHECKE_UNIT"] = $("#CHECKED_UNIT").val();
+        ajaxPram["CHECKED_START_TIME"] = CHECKED_START_TIME;
+        ajaxPram["CHECKE_DETAIL"] = msg1;
+        var isboolture =  ajaxPram["PROCESS_DECISION"] != "" && ajaxPram["RECORD_ID"] != "" && ajaxPram["CHECKE_UNIT"] != "" &&  ajaxPram["CHECKED_START_TIME"] != ""&&  ajaxPram["CHECKE_DETAIL"] != "" ;
+
+        if (isboolture) {
+            $.confirm("确认创建检查记录!", function () {
+                $.post("../timeRectification/setInspectionRecord", ajaxPram, function (response) {
+                    alert("创建成功");
+                    location.href = "../page/checkSignature?RecordId=" + RECORD_ID+"&social_credit_code="+social_credit_code+"&userId="+userId+"&ID="+ID+"&sCode="+sCode;
+                });
+            });
+        }
+        else alert("请完善检查信息")
+    }
+    //获取url参数
+    function getUrlParam(key){
+        // 获取参数
+        var url = window.location.search;
+        // 正则筛选地址栏
+        var reg = new RegExp("(^|&)"+ key +"=([^&]*)(&|$)");
+        // 匹配目标参数
+        var result = url.substr(1).match(reg);
+        //返回参数值
+        return result ? decodeURIComponent(result[2]) : null;
+    }
+
+
+</script>
+</body>
+</html>
+
+

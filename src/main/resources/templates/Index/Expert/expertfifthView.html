@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" class="ui-mobile" xmlns:th="http://www.thymeleaf.org">
+<head >
+    <meta charset="UTF-8">
+    <title>安全生产技术专家检查</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link type="text/css" rel="stylesheet" th:href="@{/Content/Index/jquery.mobile-1.3.2.min.css}" />
+    <link type="text/css" rel="Stylesheet" th:href="@{/Content/Index/bootstrap.min.css}" />
+    <link type="text/css" rel="Stylesheet" th:href="@{/Content/Index/procedure_serve.css}" />
+    <script type="text/javascript" th:src="@{/Scripts/Index/jquery-1.11.2.js}" ></script>
+    <script type="text/javascript" th:src="@{/Scripts/Index/jquery.mobile-1.3.2.min.js}"></script>
+    <script type="text/javascript" th:src="@{/Scripts/Index/bootstrap.js}" ></script>
+    <link th:href="@{/WEUI/jquery-weui.css}" rel="stylesheet" />
+    <link th:href="@{/WEUI/weui.min.css}" rel="stylesheet" />
+    <script th:src="@{/WEUI/jquery-2.1.4.js}"></script>
+    <script th:src="@{/WEUI/jquery-weui.js}"></script>
+
+
+    <script>
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return (r[2]); return null;
+        }
+        var one_id=GetQueryString("one_id");
+        var two_id=GetQueryString("two_id");
+        var three_id=GetQueryString("three_id");
+        var four_id=GetQueryString("four_id");
+        var userId=GetQueryString("userId");
+        var RecordId=GetQueryString("RecordId");
+        var social_credit_code=GetQueryString("social_credit_code");
+        var pri_title=decodeURI(GetQueryString("pri_title"));//decodeURI()将中文转换成字符串
+        var title=decodeURI(GetQueryString("title"));//decodeURI()将中文转换成字符串
+        var sCode = GetQueryString("sCode");
+
+        function show() {
+            var RecordId=GetQueryString("RecordId");
+            window.location.href="../exLawDictionary/Index?RecordId="+RecordId+ "&userId=" + userId +"&social_credit_code="+social_credit_code+"&sCode="+sCode;
+        }
+
+        function returnMainMenu() {
+            var RecordId=GetQueryString("RecordId");
+            window.location.href="../page/extwoindex?RecordId="+RecordId+"&one_id="+one_id+"&userId="+userId+"&social_credit_code="+social_credit_code+"&title="+encodeURI("二级主菜单")+"&pri_title="+pri_title+"&sCode="+sCode;
+        }
+
+        //暂存提交URL
+        function temporaryRecord() {
+            var ajaxPram = {};
+            ajaxPram["URL"] = "http://zfxc.njyjgl.cn/yjbd2/page/extwoindex?one_id="+one_id+"1&title=继续上次的检查&userId="+userId+"&RecordId="+RecordId+"&social_credit_code="+social_credit_code+"&sCode="+sCode;
+            ajaxPram["USER_ID"] = userId;
+            ajaxPram["SOCIAL_CREDIT_CODE"] = social_credit_code;
+            ajaxPram["RECORD_ID"] = RecordId;
+            $.post("../data/putTemporaryDate", ajaxPram , function (response) {
+                var odj = response;
+                alert(odj['msg']);
+            },"json");
+        }
+
+
+
+
+        var Json={};
+        Json["oneId"]=one_id;
+        Json["twoId"]=two_id;
+        Json["threeId"]=three_id;
+        Json["fourId"]=four_id;
+        Json["RecordId"]=RecordId;
+        window.onload = function () {
+
+            $.post("../Index/exCheckFiveItem", Json, function (res) {
+                document.getElementById("titleName").innerHTML = pri_title;
+                document.getElementById("titleName0").innerHTML = title;
+                var testJson = eval(res);
+                if (testJson[0]["msg"] != 'fail'&&testJson[0]["FIVE_IMG"]!=""&&testJson[0]["FIVE_IMG"]!=null)
+                {
+                    for (var i = 0; i < testJson.length; i++) {
+                        var flag=testJson[i]["flag"];
+                        if(flag==1){
+                            $("#List").append(
+                                "<tr style='border: 1px solid;'>"+
+                                "<td style='color: #00BE67'>"+
+                                "<p>" + testJson[i]["FIVE_TITLE"] + "_" + one_id + "_" + two_id + "_" + three_id + "_" +four_id+"_"+ testJson[i]["FIVE_ID"] + "&nbsp;&nbsp;" + "</p>" +
+                                "</td>" +
+                                "<td style='width: 190px;color: #00BE67'>" +
+                                "<p>" + testJson[i]["FIVE_NAME"] + "</p>" +
+                                "</td>" +
+                                "<td>"+
+                                "<button type='button' class='btn btn-primary' go='true' five_img='" + testJson[i]["FIVE_IMG"] + "' five_id='" + testJson[i]["FIVE_ID"] + "'  title='" + testJson[i]["FIVE_NAME"] + "'>开始检查</button>" +
+                                "</td> "+
+                                "</tr style='border: 1px solid;'>"
+                            );
+                        }else{
+                            $("#List").append(
+                                "<tr style='border: 1px solid;'>" +
+                                "<td>" +
+                                "<p>" + testJson[i]["FIVE_TITLE"] + "_" + one_id + "_" + two_id + "_" + three_id + "_" +four_id+"_"+ testJson[i]["FIVE_ID"] + "&nbsp;&nbsp;" + "</p>" +
+                                "</td>" +
+                                "<td style='width: 190px'>" +
+                                "<p>" + testJson[i]["FIVE_NAME"] + "</p>" +
+                                "</td>" +
+                                "<td>" +
+                                "<button type='button' class='btn btn-primary' go='true' five_img='" + testJson[i]["FIVE_IMG"] + "' five_id='" + testJson[i]["FIVE_ID"] + "'  title='" + testJson[i]["FIVE_NAME"] + "'>开始检查</button>" +
+                                "</td> " +
+                                "</tr style='border: 1px solid;'>"
+                            );
+                        }
+
+                    }
+
+                    $("button[go]").click(function () {
+                        location.href = "../page/exFiveCheckView?one_id=" + one_id + "&two_id=" + two_id + "&three_id=" + three_id + "&four_id=" +four_id+"&five_id="+ $(this).attr("five_id") + "&five_img=" + $(this).attr("five_img") + "&pri_title=" + pri_title + "&title=" + $(this).attr("title") + "&userId=" + userId + "&RecordId=" + RecordId+"&social_credit_code="+social_credit_code+"&sCode="+sCode;
+                    });
+
+                }
+                else if (testJson[0]["msg"]!='fail')
+                {
+                    document.getElementById("form").style.display ="";
+                    document.getElementById("form1").style.display ="none";
+                    $("#1-2-3-4-5").html("");
+                    if (testJson[0]["msg"]!='fail') {
+                        for (var i = 0; i < testJson.length; i++) {
+                            $("#1-2-3-4-5").append(
+                                /*列表*/
+                                '<a class="weui-cell weui-cell_access" one_id="' + testJson[i]["ONE_ID"] + '" two_id="' + testJson[i]["TWO_ID"] + '" three_id="' + testJson[i]["THREE_ID"] + '" four_id="'+testJson[i]["FOUR_ID"]+'"  five_id="'+testJson[i]["FIVE_ID"]+'"  title="' + testJson[i]["FIVE_NAME"] + '" >'+
+                                '<div class="weui-cell__bd">'+
+                                '<p>'+ testJson[i]["ONE_ID"]+"_"+testJson[i]["TWO_ID"]+"_"+testJson[i]["THREE_ID"]+"_"+testJson[i]["FOUR_ID"]+"_"+testJson[i]["FIVE_ID"]+"&nbsp;&nbsp;" +'</p>'+
+                                '</div>'+
+                                '<div class="weui-cell__ft">'+ testJson[i]["FIVE_NAME"] +'</div>'+
+                                '</a>'
+                            );
+                        }
+                    }else {
+                        alert(testJson[0]["failInfo"]);
+                    }
+                    $("a[one_id]").click(function () {
+                        location.href = "../page/exsixindex?one_id=" + $(this).attr("one_id")+"&two_id="+$(this).attr("two_id")+"&three_id="+$(this).attr("three_id")+"&four_id="+$(this).attr("four_id")+"&five_id="+$(this).attr("five_id")+"&pri_title="+pri_title+"&title="+$(this).attr("title")+"&userId="+userId+"&RecordId="+RecordId+"&social_credit_code="+social_credit_code+"&sCode="+sCode;
+                    });
+
+                }
+                else {
+                    alert(testJson[0]["failInfo"]);
+                }
+            });
+        }
+
+
+    </script>
+</head>
+<body>
+<div id="form1">
+    <h3 id="titleName"  style="text-align:center"></h3>
+
+    <div style="margin-top: 30px">
+        <table id="List"  border="0" cellspacing="0" cellpadding="0" style="border: 1px solid;" >
+
+        </table>
+    </div>
+    <button   type="button" style="margin-top:30px;width: 100%;text-align: center;" class="btn btn-success" onclick="show()">提交</button>
+    <button   type="button" style="margin-top:30px;width: 100%;text-align: center;" class="btn btn-success" onclick="temporaryRecord()">暂存</button>
+    <button   type="button" style="margin-top:30px;width: 100%;text-align: center;" class="btn btn-success" onclick="returnMainMenu()">返回主菜单</button>
+    <!--<div  style="margin-top:20px;margin-bottom: 30px;">
+        <input onclick="returnMainMenu()"  class="weui-btn weui-btn_primary" style="width:90%;font-size:20px;" value="返回主菜单" type="button" >
+    </div>-->
+
+</div>
+
+<form id="form" style="display: none">
+    <h3 id="titleName0"  style="text-align:center"></h3>
+
+    <!--列表-->
+    <div class="weui-cells" id="1-2-3-4-5">
+
+    </div>
+</form>
+
+</body>
+</html>

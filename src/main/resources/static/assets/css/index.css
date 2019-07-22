@@ -1,0 +1,42 @@
+.part{
+	background-color: #ededee;
+	padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+.part1{
+	background-color: white;
+	padding-top: 80px;
+	padding-bottom: 80px;
+	margin-bottom: 30px;
+}
+.part2{
+	background-color: white;
+	padding-top: 80px;
+	padding-bottom: 80px;
+	
+}
+
+.picture_style{
+	
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.home_button{
+	width: 215px;
+	background-color: blue;
+	font-size: 10px;
+}
+
+.home_button:not(.weui-btn_disabled):active{
+	background-color: #161d9b;
+}
+.weui-table td, .weui-table th, table td, table th {
+    border: 0px;
+    text-align: left;
+    line-height: 25px;
+    padding: 8px;
+}
